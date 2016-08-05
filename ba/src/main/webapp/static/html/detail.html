@@ -7,18 +7,26 @@
 <body>
 <link rel="stylesheet" href="/static/kindeditor/themes/default/default.css">
 <script type="text/javascript" src="/static/kindeditor/kindeditor-all-min.js"></script>
-<script type="text/javascript" src="/static/kindeditor/easyui-kindeditor.js"></script>
+<!-- <script type="text/javascript" src="/static/kindeditor/easyui-kindeditor.js"></script> -->
 <script type="text/javascript" src="/static/kindeditor/lang/zh-CN.js"></script>
-<textarea rows="" cols="" id="proTextArea" class="easyui-kindeditor" style="height: 450px;"></textarea>
+<textarea rows="" cols="" id="proTextArea" class="easyui-kindeditor" style="height: 505px;width: 800px;"></textarea>
 <script type="text/javascript">
-var editor;
-KindEditor.ready(function (K) {
-	editor = K.create("#proTextArea",{
+$(function(){
+	var editor;
+	var options = {
 		allowImageUpload:true,
 		allowUpload:true,
-		allowFileManager:true
-	});
-});	
+		allowFileManager:true,
+		allowPreviewEmoticons:true,
+		uploadJson:"/kindeditor/upload",
+		items:[
+			'source','|','undo','redo','|','preview','copy','paste','|','justifyleft','justifycenter','justifyright',
+			'justifyfull','|','fontname','fontsize','forecolor','|','bold','italic','underline',
+			'strikethrough','|','image','hr','multiimage','clearhtml','quickformat'
+		]
+	}
+	window.editor = KindEditor.create("#proTextArea",options);
+})
 </script>
 </body>
 </html>

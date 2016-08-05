@@ -2,16 +2,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>商品封面</title>
 </head>
 <body class="easyui-layout" data-options="split:false,fit:true">
 <div style="height: 20%">
 <table style="padding: 20px;">
 	<tr>
-		<td>商品名称：</td>
-		<td style="padding-left: 20px;"><input id="inProductName" type="text" class="easyui-textbox"></td>
-		<td style="padding-left: 20px;">创建日期：</td>
-		<td style="padding-left: 20px;"><input id="inCreateAt" class="easyui-datebox"></td>
-		<td style="padding-left: 20px;">状态：</td>
+		<td>商品编号：</td>
+		<td style="padding-left: 20px;">
+			<input id="inProductId" type="text" class="easyui-textbox">
+		</td>
+		<td style="padding-left: 20px;">起始日期：</td>
+		<td style="padding-left: 20px;"><input id="inStartTime" class="easyui-datebox"></td>
+		<td style="padding-left: 20px;">结束日期：</td>
+		<td style="padding-left: 20px;"><input id="inEndTime" class="easyui-datebox"></td>
 		<td style="padding-left: 10px;">
 			<select id="selState" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="height: auto;width: auto;">
 				<option value="1">有效</option>
@@ -22,20 +26,21 @@
 			<a id="aSearch" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
 		</td>
 	</tr>
-</table></div>
-<div style="height: 80%;">
-	<table id="tbQueryPro"></table>
+</table>
 </div>
-<div id="dialogDiv" style="top: 30px;"></div>
+<div style="height: 80%">
+	<table id="tbQueryProImg"></table>
+</div>
 <script type="text/javascript">
-$("#tbQueryPro").datagrid({
-	url:'/prod/query',
+$("#tbQueryProImg").datagrid({
+	url:'/prod/detail/query',
 	fit:true,
 	align:"center",
 	queryParams:{
-		productName:$("#inProductName").val(),
-		createAt:$("#inCreateAt").val(),
+		productId:$("#inProductId").val(),
 		state:$("#selState option:selected").val()
+		startTime:$("#inStartTime").val(),
+		endTime:$("#inEndTime").val()
 	},
 	beginEdit:1,
 	sortName:'createAt',
@@ -51,11 +56,13 @@ $("#tbQueryPro").datagrid({
 	columns:[[
 	          {field:'id',title:'主键',width:100,align:"center"},
 	          {field:'productName',title:'商品名称',width:150,editor:"text"},
-	          {field:'productPrice',title:'商品价格',width:150,align:"center",editor:{type:"numberbox",options:{min:0,precision:2}}},
 	          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
 	        	  return "<img src="+row.productImg+">";
 	          }},
 	          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
+	          {field:"createUser",title:"创建人",width:150,align:"center"},
+	          {field:"updateAt",title:"修改时间",width:150,align:"center",formatter:formatDateYmdHms},
+	          {field:"updateUser",title:"修改人",width:150,align:"center"},
 	          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
 	        	  if (row.editing){
                       var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
@@ -122,71 +129,6 @@ $("#tbQueryPro").datagrid({
 		});
     }
 });
-
-function getRowIndex(target){
-    var tr = $(target).closest('tr.datagrid-row');
-    return parseInt(tr.attr('datagrid-row-index'));
-}
-
-function editrow(target){
-    $('#tbQueryPro').datagrid('beginEdit', getRowIndex(target));
-}
-
-function deleterow(target){
-    $.messager.confirm('系统提示','确定要删除嘛?',function(r){
-        if (r){
-            $('#tbQueryPro').datagrid('deleteRow', getRowIndex(target));
-             var pro = {
-            	id:$(target).attr("data"),
-            	state:0
-            }
-            $.get("/prod/update",pro);
-        }
-    });
-}
-
-function detailrow(target){
-	$("#dialogDiv").dialog({
-		title:'商品详情',
-		width:820,
-		height:600,
-		closed:true,
-		cache:true,
-		href:"static/html/detail.html",
-		modal:true,
-		buttons:[{
-			text:"确定",
-			iconCls:"icon-ok",
-			handler:function(){
-				var pd = {
-					productId : $(target).attr("data"),
-					detailInfo : editor.html()
-				}
-				
-				$.post("/prod/detail/save",pd,function(data){
-					if(data.responseCode == 10000){
-						$("#dialogDiv").dialog("close");
-					}
-				});
-			}
-		},{
-			text:"取消",
-			iconCls:"icon-cancel",
-			handler:function(){
-				$("#dialogDiv").dialog("close");
-			}
-		}]
-	});
-	$("#dialogDiv").dialog("open");
-}
-
-function saverow(target){
-    $('#tbQueryPro').datagrid('endEdit', getRowIndex(target));
-}
-
-function cancelrow(target){
-    $('#tbQueryPro').datagrid('cancelEdit', getRowIndex(target));
-}
-
+</script>
 </body>
 </html>
