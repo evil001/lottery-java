@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.product.detail.ProductDetailDao" >
+	
+	<!-- 添加商品详情 -->
+	<insert id="saveProductDetail" parameterType="ProductDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into tl_product_detail
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="productId !=null">
+				product_id,
+			</if>
+			<if test="detailInfo !=null and detailInfo !=''">
+				detail_info,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="createAt !=null">
+				create_at,
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				create_user,
+			</if>
+			<if test="updateAt !=null">
+				update_at,
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="productId !=null">
+				#{productId},
+			</if>
+			<if test="detailInfo !=null and detailInfo !=''">
+				#{detailInfo},
+			</if>
+			<if test="state != null">
+				#{state},
+			</if>
+			<if test="createAt !=null">
+				#{createAt},
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				#{createUser},
+			</if>
+			<if test="updateAt !=null">
+				#{updateAt},
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				#{update_user},
+			</if>
+		</trim>
+	</insert>
+	<!-- 修改商品详情 -->
+	
+</mapper>
