@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<link rel="stylesheet" type="text/css" href="static/uploadify/uploadify.css">
+<div style="margin: 20px 0;"></div>
+<form action="" id="addProFrom" enctype="multipart/form-data" style="margin: 0px auto;margin-left: 20px;text-align: -webkit-center;" method="POST">
+	<table cellspacing="10">
+		<tr>
+			<td>商品名称：</td>
+			<td><input class="easyui-textbox" type="text" id="inProName" name="productName" data-options="required:true"></input></td>
+			<td>商品价格：</td>
+			<td><input class="easyui-textbox" type="text" id="inProPrice" name="productPrice" data-options="required:true,min:0,precision:2"></input></td>
+		</tr>
+		<tr>
+			<td>商品描述：</td>
+			<td colspan="3"><input style="width: 431px;" class="easyui-textbox" type="text" id="inProDesc" name="productDesc" data-options="required:true"></input></td>
+		</tr>
+		<tr>
+			<td>商品封面：</td>
+			<td><input type="file" id="files" name="files"></td>
+			<td colspan="2">
+				<img alt="" src="" id="coverImg"  style="padding-left:10px;">
+				<input type="hidden" name="productImg" value="" id="inProductImg">
+			</td>
+		</tr>
+		<tr>
+			<td>商品图片列表：</td>
+			<td><input type="file" id="fileList" name="files"></td>
+			<td id="imgList" colspan="2">
+				
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" style="width: 217px;height: 30px;" value="保存" class="easyui-linkbutton"></td>
+			<td colspan="2"><input id="restBtn" type="button" style="width: 217px;height: 30px;" value="重置" class="easyui-linkbutton"></td>
+		</tr>
+	</table>
+</form>
+<script type="text/javascript">
+	//var arr = new Array();
+	$("#files").uploadify({
+		'queueID'   : 'some_file_queue',
+		'uploader'	: '/upload',
+		'buttonText': '选择封面',
+		'swf'		: 'static/uploadify/uploadify.swf',
+		'fileTypeExts':'*.jpeg;*.jpg;*.png',
+		'fileSizeLimit':'5MB',
+		'multi'		: false,
+		'buttonClass':'some-class',
+		'auto'		: 'true',
+		'fileObjName': 'files',
+		'method'	: 'POST',
+		'onUploadSuccess':function(file,data, response){
+			var dataJson = JSON.parse(data);
+			$("#coverImg").attr("src",dataJson.data+"?imageView2/1/w/80/h/80/q/85");
+			$("#inProductImg").val(dataJson.data+"?imageView2/1/w/80/h/80/q/85");
+		},
+		'onInit'	:function(){
+			$("#some_file_queue").hide();
+		}
+	});
+	
+	$("#fileList").uploadify({
+		'queueID'   : 'some_file_queue',
+		'uploader'	: '/upload',
+		'buttonText': '选择封面',
+		'swf'		: 'static/uploadify/uploadify.swf',
+		'fileTypeExts':'*.jpeg;*.jpg;*.png',
+		'fileSizeLimit':'5MB',
+		'multi'		: true,
+		'buttonClass':'some-class',
+		'auto'		: 'false',
+		'fileObjName': 'files',
+		'method'	: 'POST',
+		'uploadLimit': 7,
+		'overrideEvents':['onSelectError','onUploadError'],
+		'onSelectError' :uploadify_onSelectError,
+		'onUploadError' :uploadify_onUploadError,
+		'onUploadSuccess':function(file,data, response){
+			var dataJson = JSON.parse(data);
+			$("<img src='"+dataJson.data+"?imageView2/1/w/80/h/80/q/85"+"' class='productImgList' style='padding-left:10px;'/>").insertBefore("#imgList");
+			$("<input type='hidden' value='"+dataJson.data+"?imageView2/1/w/80/h/80/q/85"+"' name='productImgList' style='padding-left:10px;'/>").insertBefore("#imgList");
+			//arr.push(dataJson.data+"?imageView2/1/w/80/h/80/q/85");
+		},
+		'onInit'	:function(){
+			$("#some_file_queue").hide();
+		}
+	});
+	
+	$("#addProFrom").form({
+		url:'/prod/saveProduct',
+		onSubmit:function(){
+			return $("#addProFrom").form('validate');
+		},
+		success:function(data){
+			var dataJson = JSON.parse(data);
+			if(dataJson.responseCode == 10000){
+				$.messager.confirm('系统提示','商品添加成功',function(r){
+				    if (r){
+				    	$("img").attr("src","");
+				    }
+				});
+				$("#addProFrom").form('clear');
+			}
+		}
+	});
+	
+	$("#addProFrom").submit();
+	
+	$("#restBtn").click(function(){
+		$("#addProFrom").form('clear');
+	});
+</script>
+</body>
+</html>

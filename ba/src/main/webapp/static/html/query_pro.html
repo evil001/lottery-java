@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body class="easyui-layout" data-options="split:false,fit:true">
+<div style="height: 20%">
+<table style="padding: 20px;">
+	<tr>
+		<td>商品名称：</td>
+		<td style="padding-left: 20px;"><input id="inProductName" type="text" class="easyui-textbox"></td>
+		<td style="padding-left: 20px;">创建日期：</td>
+		<td style="padding-left: 20px;"><input id="inCreateAt" class="easyui-datebox"></td>
+		<td style="padding-left: 20px;">状态：</td>
+		<td style="padding-left: 10px;">
+			<select id="selState" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="height: auto;width: auto;">
+				<option value="1">有效</option>
+				<option value="0">无效</option>
+			</select>
+		</td>
+		<td style="padding-left: 20px;">
+			<a id="aSearch" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+		</td>
+	</tr>
+</table></div>
+<div style="height: 80%;">
+	<table id="tbQueryPro"></table>
+</div>
+<div id="dialogDiv" style="top: 50px;"></div>
+<script type="text/javascript">
+$("#tbQueryPro").datagrid({
+	url:'/prod/query',
+	fit:true,
+	align:"center",
+	queryParams:{
+		productName:$("#inProductName").val(),
+		createAt:$("#inCreateAt").val(),
+		state:$("#selState option:selected").val()
+	},
+	beginEdit:1,
+	sortName:'createAt',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+	          {field:'id',title:'主键',width:100,align:"center"},
+	          {field:'productName',title:'商品名称',width:150,editor:"text"},
+	          {field:'productPrice',title:'商品价格',width:150,align:"center",editor:{type:"numberbox",options:{min:0,precision:2}}},
+	          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
+	        	  return "<img src="+row.productImg+">";
+	          }},
+	          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
+	          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
+	        	  if (row.editing){
+                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
+                      var c = '<a href="javascript:void(0)" onclick="cancelrow(this)">取消</a>';
+                      return s+c;
+                  } else {
+                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
+                      var a = "<a href='javascript:void(0)' onclick='detailrow()'>详情</a> ";
+                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
+                      return e+a+d;
+                  }
+	          }}
+	        ]],
+	onBeforeLoad:function(param){
+		
+	},
+	onLoadSuccess:function(data){
+		
+	},
+	onLoadError:function(){
+		
+	},
+	onDblClickRow:function(index,field){
+		/* console.log(index)
+		console.log(field)
+		if (endEditing()){
+			$('#tbQueryPro').datagrid('selectRow', index).datagrid('editCell', {index:index,field:field});
+			editIndex = index;
+		} */
+	},
+	onCancelEdit:function(index,row){
+		row.editing = false;
+		$(this).datagrid('refreshRow', index);
+	},
+	onBeforeEdit:function(index,row){
+        row.editing = true;
+        $(this).datagrid('refreshRow', index);
+    },
+    onAfterEdit:function(index,row){
+        row.editing = false;
+        $(this).datagrid('refreshRow', index);
+    },
+    onEndEdit:function(index,row){
+    	var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'productName',
+            field: 'productPrice'
+        });
+    	var pro = {
+    		id:row.id,
+    		productName:row.productName,
+    		productDesc:row.productDesc,
+    		productPrice:row.productPrice,
+    		state:row.state
+    	}
+		$.get("/prod/update",pro,function(data){
+			if(data.responseCode == 10000){
+				$.messager.show({
+					title:"系统提示",
+					msg:"修改成功",
+					showType:"show"
+				})
+			}
+		});
+    }
+});
+
+function getRowIndex(target){
+    var tr = $(target).closest('tr.datagrid-row');
+    return parseInt(tr.attr('datagrid-row-index'));
+}
+
+function editrow(target){
+    $('#tbQueryPro').datagrid('beginEdit', getRowIndex(target));
+}
+
+function deleterow(target){
+    $.messager.confirm('系统提示','确定要删除嘛?',function(r){
+        if (r){
+            $('#tbQueryPro').datagrid('deleteRow', getRowIndex(target));
+             var pro = {
+            	id:$(target).attr("data"),
+            	state:0
+            }
+            $.get("/prod/update",pro);
+        }
+    });
+}
+
+function detailrow(){
+	$("#dialogDiv").dialog({
+		title:'商品详情',
+		width:666,
+		height:550,
+		closed:true,
+		cache:true,
+		href:"static/html/detail.html",
+		modal:true,
+		buttons:[{
+			text:"确定",
+			iconCls:"icon-ok",
+			handler:function(){
+				
+			}
+		},{
+			text:"取消",
+			iconCls:"icon-cancel",
+			handler:function(){
+				$("#dialogDiv").dialog("close");
+			}
+		}]
+	});
+	$("#dialogDiv").dialog("open");
+}
+
+function saverow(target){
+    $('#tbQueryPro').datagrid('endEdit', getRowIndex(target));
+}
+
+function cancelrow(target){
+    $('#tbQueryPro').datagrid('cancelEdit', getRowIndex(target));
+}
+
+</body>
+</html>
