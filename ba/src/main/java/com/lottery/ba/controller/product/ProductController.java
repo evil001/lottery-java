@@ -2,6 +2,7 @@ package com.lottery.ba.controller.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,5 +44,19 @@ public class ProductController {
 	public ClientMessage updateProduct(Product pro) {
 		this.productService.updateProduct(pro);
 		return ClientMessage.success();
+	}
+
+	@RequestMapping(value = "/prod/detail/save", method = RequestMethod.POST)
+	public ClientMessage saveProductDetail(Long productId, String detailInfo) {
+		this.productService.saveProductDetail(productId, detailInfo);
+		return ClientMessage.success();
+	}
+
+	@RequestMapping(value = "/prod/detail/query")
+	public EasyUIMessage getProductImg(@RequestParam(required = false) Long productId, int state,
+			@RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime,
+			@RequestParam(name = "page", required = false) int pageNum,
+			@RequestParam(name = "rows", required = false) int pageSize) {
+		return this.productService.getProductImg(productId, state, startTime, endTime, pageNum, pageSize);
 	}
 }

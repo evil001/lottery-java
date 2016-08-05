@@ -2,7 +2,11 @@ package com.lottery.ba.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,8 +44,40 @@ public class MainController {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "/kindeditor/upload", method = RequestMethod.POST)
+	public Map<String, Object> handleKindUpload(MultipartFile imgFile) {
+		String filePath, fileName = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (System.getProperties().getProperty("os.name").startsWith("Windows")) {
+			filePath = windowUploadUrl;
+		} else {
+			filePath = linuxUploadUrl;
+		}
+		if (imgFile == null) {
+			map.put("error", -1);
+			map.put("url", null);
+			return map;
+		}
+		try {
+			fileName = imgFile.getOriginalFilename();
+			imgFile.transferTo(new File(filePath + fileName));
+			// 七牛上传
+			this.uploadThread.handleUpload(filePath, fileName);
+			map.put("error", 0);
+			map.put("url", Constants.QINIU_URL.concat(fileName));
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("error", -1);
+			map.put("url", null);
+			return map;
+		}
+		return map;
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ClientMessage handleUpload(@RequestParam("files") MultipartFile[] files) {
+	public ClientMessage handleUpload(@RequestParam("files") MultipartFile[] files, HttpServletRequest request) {
 		String filePath = null;
 		List<String> list = new ArrayList<String>();
 		if (System.getProperties().getProperty("os.name").startsWith("Windows")) {
