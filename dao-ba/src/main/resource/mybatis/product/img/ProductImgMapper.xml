@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.product.img.ProductImgDao" >
+	
+	<!-- 查询商品封面 -->
+	<select id="getProductImgList" resultType="ProductImg">
+		SELECT
+		pi.id,
+		(
+			SELECT
+				p.product_name
+			FROM
+				tl_product p
+			WHERE
+				p.id = pi.product_id
+		) productName,
+		pi.product_img,
+		pi.state,
+		pi.create_at,
+		pi.create_user,
+		pi.update_at,
+		pi.update_user
+	FROM
+		tl_product_img pi
+		<where>
+			<if test="productId !=null">
+				pi.product_id = #{productId}
+			</if>
+			<if test="state !=null">
+				AND pi.state = #{state}
+			</if>
+			<if test="startTime !=null and endTime !=null">
+				AND pi.create_at BETWEEN #{startTime} AND #{endTime} 
+			</if>
+		</where>
+		LIMIT #{pageNum},#{pageSize}
+	</select>
+	<!-- 修改商品详情 -->
+	
+</mapper>
