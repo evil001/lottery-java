@@ -1,0 +1,37 @@
+file:
+    windows: D:/
+    linux  : /var/
+server:
+    port: 8080
+spring:
+    datasource:
+        name: lottery
+        url: jdbc:mysql://localhost:3306/lottery
+        username: root
+        password: 52105210
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    mvc:
+        view:
+            prefix: /WEB-INF/view/
+            suffix: .jsp
+        static-path-pattern: /static/**
+    resources:
+        static-locations: /static/
+    http:
+        encoding.charset: UTF-8
+        encoding.enable: true
+        encoding.force: true
