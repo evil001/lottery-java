@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.product.collect.ProductCollectDao" >
+	
+	<!-- 商品列表查询 -->
+	<select id="getProductImgCollect" resultType="ProductImgCollect">
+		SELECT
+		ic.id,
+		(
+			SELECT
+				p.product_name
+			FROM
+				tl_product p
+			WHERE
+				p.id = ic.product_id AND p.product_name LIKE CONCAT('%','${productName}','%')
+		) productName,
+		ic.img_url imgUrl,
+		ic.state,
+		ic.create_at createAt,
+		ic.update_at updateAt,
+		ic.update_user updateUser
+	FROM
+		tl_img_collection ic
+		<where>
+			<if test="state !=null">
+				ic.state = #{state}
+			</if>
+			<if test="(startTime !=null and startTime !='') or (endTime !=null and endTime !='')">
+				ic.create_at BETWEEN #{startTime} AND #{endTime}
+			</if>
+		</where>
+	</select>
+</mapper>

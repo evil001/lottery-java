@@ -14,12 +14,12 @@
 			WHERE
 				p.id = pi.product_id
 		) productName,
-		pi.product_img,
+		pi.product_img productImg,
 		pi.state,
-		pi.create_at,
-		pi.create_user,
-		pi.update_at,
-		pi.update_user
+		pi.create_at createAt,
+		pi.create_user createUser,
+		pi.update_at updateAt,
+		pi.update_user updateUser
 	FROM
 		tl_product_img pi
 		<where>
@@ -29,12 +29,31 @@
 			<if test="state !=null">
 				AND pi.state = #{state}
 			</if>
-			<if test="startTime !=null and endTime !=null">
+			<if test="(startTime !=null and startTime !='') or (endTime !=null and endTime !='')">
 				AND pi.create_at BETWEEN #{startTime} AND #{endTime} 
 			</if>
 		</where>
-		LIMIT #{pageNum},#{pageSize}
 	</select>
-	<!-- 修改商品详情 -->
 	
+	<!-- 更新封面信息 -->
+	<update id="updateProductImg" parameterType="ProductImg">
+		UPDATE tl_product_img 
+		<set>
+			<if test="productId !=null">
+				product_id = #{productId},
+			</if>
+			<if test="productImg !=null and productImg !=''">
+				product_img = #{productImg},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="updateAt !=null">
+				update_at = #{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser != ''">
+				update_user = #{updateUser},
+			</if>
+		</set>
+	</update>
 </mapper>
