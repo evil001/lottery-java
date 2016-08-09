@@ -93,7 +93,7 @@ public class MainController {
 						multipartFile.transferTo(new File(filePath + fileName));
 						// 七牛上传
 						System.out.println(filePath + "::::" + fileName);
-						this.uploadThread.handleUpload(filePath, fileName);
+						// this.uploadThread.handleUpload(filePath, fileName);
 						list.add(Constants.QINIU_URL.concat(fileName));
 					} catch (Exception e) {
 						e.printStackTrace();

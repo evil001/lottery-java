@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.lottery.domain.Product;
+import com.lottery.domain.prod.Product;
 
 @Repository
 public interface ProductDao {

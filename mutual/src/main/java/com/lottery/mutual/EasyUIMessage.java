@@ -1,7 +1,5 @@
 package com.lottery.mutual;
 
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * easyui 报文
  * 
@@ -12,24 +10,24 @@ public class EasyUIMessage {
 
 	private static EasyUIMessage e = new EasyUIMessage();
 
-	private Integer total;
+	private Long total;
 
 	private Object rows;
 
 	public EasyUIMessage() {
 	}
 
-	public final static EasyUIMessage easyJson(Integer total, Object rows) {
+	public final static EasyUIMessage easyJson(Long total, Object rows) {
 		e.setTotal(total);
 		e.setRows(rows);
 		return e;
 	}
 
-	public Integer getTotal() {
+	public Long getTotal() {
 		return total;
 	}
 
-	public void setTotal(Integer total) {
+	public void setTotal(Long total) {
 		this.total = total;
 	}
 
@@ -42,6 +40,5 @@ public class EasyUIMessage {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(JSONObject.toJSONString(EasyUIMessage.easyJson(1, "2")));
 	}
 }

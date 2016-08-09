@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.lottery.domain.ProductImg;
+import com.lottery.domain.prod.ProductImg;
 
 /**
  * 商品封面
@@ -28,6 +28,12 @@ public interface ProductImgDao {
 	 * @return
 	 */
 	List<ProductImg> getProductImgList(@Param("productId") Long productId, @Param("startTime") String startTime,
-			@Param("endTime") String endTime, @Param("state") int state, @Param("pageNum") int pageNum,
-			@Param("pageSize") int pageSize);
+			@Param("endTime") String endTime, @Param("state") int state);
+
+	/**
+	 * 修改产品封面
+	 * 
+	 * @param img
+	 */
+	void updateProductImg(ProductImg img);
 }
