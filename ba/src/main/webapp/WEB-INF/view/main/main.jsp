@@ -22,14 +22,14 @@
 	</div>
 	<div region="west" title="菜单栏" split="true" style="width: 120px;">
 		<div class="easyui-accordion" fit="true" style="width: 100%px;">
+			<div title="CMS">
+				<a href="#" id="aCategory" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">分类管理</a>
+			</div>
 			<div title="商品管理" style="text-align: -webkit-center;">
 				<a href="#" id="aAddPro" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">添加商品</a>
 				<a href="#" id="aProImg" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">封面管理</a>
-				<a href="#" id="aAddPro" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">列表管理</a>
+				<a href="#" id="aProImgList" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">列表管理</a>
 				<a href="#" id="aQueryPro" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">商品查询</a>
-			</div>
-			<div title="CMS">
-				
 			</div>
 			<div title="用户管理">
 			

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品封面</title>
+</head>
+<body class="easyui-layout" data-options="split:false,fit:true">
+<div style="height: 20%">
+<table style="padding: 20px;">
+	<tr>
+		<td>商品编号：</td>
+		<td style="padding-left: 20px;">
+			<input id="inProductId" type="text" class="easyui-textbox">
+		</td>
+		<td style="padding-left: 20px;">起始日期：</td>
+		<td style="padding-left: 20px;"><input id="inStartTime" class="easyui-datebox"></td>
+		<td style="padding-left: 20px;">结束日期：</td>
+		<td style="padding-left: 20px;"><input id="inEndTime" class="easyui-datebox"></td>
+		<td style="padding-left: 10px;">
+			<select id="selState" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="height: auto;width: auto;">
+				<option value="1">有效</option>
+				<option value="0">无效</option>
+			</select>
+		</td>
+		<td style="padding-left: 20px;">
+			<a id="aSearch" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+		</td>
+	</tr>
+</table>
+</div>
+<div style="height: 80%">
+	<table id="tbQueryProImg"></table>
+</div>
+<div id="dialogUploadDiv" style="top: 30px;"></div>
+<script type="text/javascript">
+$("#tbQueryProImg").datagrid({
+	url:'/prod/detail/query',
+	fit:true,
+	align:"center",
+	queryParams:{
+		productId:$("#inProductId").val(),
+		state:$("#selState option:selected").val(),
+		startTime:$("#inStartTime").val(),
+		endTime:$("#inEndTime").val()
+	},
+	beginEdit:1,
+	sortName:'create_at',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+	          {field:'id',title:'主键',width:100,align:"center"},
+	          {field:'productName',title:'商品名称',width:150,editor:"text"},
+	          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
+	        	  return "<img src="+row.productImg+">";
+	          }},
+	          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
+	          {field:"createUser",title:"创建人",width:150,align:"center"},
+	          {field:"updateAt",title:"修改时间",width:150,align:"center",formatter:formatDateYmdHms},
+	          {field:"updateUser",title:"修改人",width:150,align:"center"},
+	          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
+	              var e = '<a href="javascript:void(0)" data="'+row.id+'" onclick="editrow(this)">编辑</a> ';
+	              var d = '<a href="javascript:void(0)" data="'+row.id+'" >删除</a>';
+	              return e+d;
+	          }}
+	        ]]
+});
+function editrow(target){
+	$("#dialogUploadDiv").dialog({
+		title:"封面上传",
+		width:500,
+		height:400,
+		closed:true,
+		href:"static/html/good_manager/upload_img.html",
+		modal:true,
+		buttons:[{
+			text:"确定",
+			iconCls:"icon-ok",
+			handler:function(){
+				var img = {
+					id:$(target).attr("data"),
+					productImg:$("#inImg").val()
+				}
+				$.get("/prod/img/update",img,function(data){
+					if(data.responseCode == 10000){
+						$("#dialogUploadDiv").dialog("close");
+						$("#tbQueryProImg").datagrid("reload");
+					}
+				})
+			}
+		},{
+			text:"取消",
+			iconCls:"icon-cancel",
+			handler:function(){
+				$("#dialogUploadDiv").dialog("close");
+			}
+		}]
+	});
+	$("#dialogUploadDiv").dialog("open");
+}
+</script>
+</body>
+</html>
