@@ -123,11 +123,6 @@ $("#tbQueryPro").datagrid({
     }
 });
 
-function getRowIndex(target){
-    var tr = $(target).closest('tr.datagrid-row');
-    return parseInt(tr.attr('datagrid-row-index'));
-}
-
 function editrow(target){
     $('#tbQueryPro').datagrid('beginEdit', getRowIndex(target));
 }

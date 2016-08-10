@@ -1,6 +1,7 @@
 package com.lottery.domain.category;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.lottery.domain.base.BaseDomain;
 
@@ -16,6 +17,16 @@ public class ProdType extends BaseDomain implements Serializable {
 	private String typeName;
 
 	private String typeCode;
+
+	public ProdType(String categoryCode, String typeName, String typeCode, Date date) {
+		this.categoryCode = categoryCode;
+		this.typeName = typeName;
+		this.typeCode = typeCode;
+		super.createAt = date;
+	}
+
+	public ProdType() {
+	}
 
 	public String getCategoryCode() {
 		return categoryCode;

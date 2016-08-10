@@ -6,7 +6,7 @@ public class BaseDomain {
 
 	protected Long id;
 
-	protected int state;
+	protected int state = 1;
 
 	protected Date createAt;
 

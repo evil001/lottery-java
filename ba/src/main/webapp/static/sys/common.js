@@ -119,3 +119,8 @@ function formatDateYmdHms(value){
     return dt.format("yyyy-MM-dd hh:mm:ss"); //扩展的Date的format方法(上述插件实现)  
 }
 
+function getRowIndex(target){
+    var tr = $(target).closest('tr.datagrid-row');
+    return parseInt(tr.attr('datagrid-row-index'));
+}
+

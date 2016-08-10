@@ -7,25 +7,23 @@
 <body>
 <div class="easyui-layout" data-options="fit:true">
 	<div class="" title="添加子类" data-options="region:'east',split:false" style="width: 50%;">
-		<form action="">
+		<form action="" method="get" id="sAddform">
 			<table style="text-align: -webkit-center;width: 100%;">
 				<tr>
 					<td colspan="1" style="padding: 20px;">父类名称：</td>
 					<td colspan="3">
-						<select id="selCate"></select>
-						<div id="divCon">
-							<div style="color:#99BBE8;background:#fafafa;padding:5px;">请选择父类</div>
-						</div>
+						<select id="selCate" class=""></select>
 					</td>
 				</tr>
 				<tr>
 					<td style="padding: 20px;">子类名称：</td>
-					<td><input type="text" class="easyui-textbox"></td>
+					<td><input name="typeName" type="text" class="easyui-textbox" data-options="required:true"></td>
 					<td>子类编号：</td>
-					<td><input type="text" class="easyui-textbox"></td>
+					<td><input type="text" name="typeCode" class="easyui-textbox" data-options="required:true"></td>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align: -webkit-center;">
+						<input type="hidden" id="pCode" name="pCode">
 						<input type="submit" style="width: 150px;height: 25px;" class="easyui-linkbutton" value="保存">
 					</td>
 				</tr>
@@ -33,15 +31,15 @@
 		</form>
 	</div>
 	<div class="" title="添加父类" data-options="region:'west',split:false" style="width: 50%;">
-		<form action="">
+		<form action="" method="get" id="fAddForm">
 			<table style="text-align: -webkit-center;width: 100%;">
 				<tr>
 					<td style="padding: 20px;">父类名称：</td>
-					<td><input type="text" class="easyui-textbox"></td>
+					<td><input type="text" name="categoryName" class="easyui-textbox" data-options="required:true"></td>
 				</tr>
 				<tr>
 					<td style="padding: 20px;">父类编号：</td>
-					<td><input type="text" class="easyui-textbox"></td>
+					<td><input type="text" name="categoryCode" class="easyui-textbox" data-options="required:true"></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: -webkit-center;">
@@ -52,20 +50,135 @@
 		</form>
 	</div>
 	<div region="south" split="false" style="height: 300px;">
-	
+		<table id="tbProSett"></table>
 	</div>
 </div>
 <script type="text/javascript">
 $(function(){
-	$("#selCate").combo({
-		width:150,
-		editable:false,
-		onSelect:function(data){
-			 $("#selCate").combobox('setValue', vTxt);
+	var category={};
+	$("#fAddForm").form({
+		url:"/category/save",
+		onSubmit:function(){
+			return $("#fAddForm").form('validate');
+		},
+		success:function(data){
+			var dataJson = JSON.parse(data);
+			if(dataJson.responseCode == 10000){
+				$.messager.confirm('系统提示','父分类添加成功');
+				$("#fAddForm").form('clear');
+			}
 		}
 	});
-	$("#divCon").appendTo($("#selCate").combo("panel"));
+	
+	$("#fAddForm").submit();
+	
+	$("#sAddform").form({
+		url:"/category/type/save",
+		onSubmit:function(){
+			return $("#sAddform").form('validate');
+		},success:function(data){
+			var dataJson = JSON.parse(data);
+			if(dataJson.responseCode == 10000){
+				$.messager.confirm('系统提示','子分类添加成功');
+				$("#sAddform").form('clear');
+			}
+		}
+	});
+	$("#sAddform").submit();
+	
+	$.get("/category/all",function(json){
+		category = json;
+		$("#selCate").combobox({
+			data:json.data,
+			width:150,
+			valueField:"categoryCode",
+			textField:"categoryName",
+			editable:false,
+			onLoadSuccess:function(){
+				var data = $('#selCate').combobox('getData');
+	            if (data.length > 0) {
+	                $("#selCate").combobox('select', data[0].categoryCode);
+	                $("#pCode").val($("#selCate").combobox("getValue"));
+	            }
+			},
+			onSelect:function(){
+				$("#pCode").val($("#selCate").combobox("getValue"));
+			}
+		});
+	});
+	console.log(category)
+	$("#tbProSett").datagrid({
+		fit:true,
+		url:'/prod/query',
+		align:"center",
+		beginEdit:5,
+		sortName:'createAt',
+		sortOrder:'desc',
+		pageNumner:1,
+		pageSize:10,
+		pagination:true,
+		rownnumbers:true,
+		method:"GET",
+		nowrap:true,
+		numbers:true,
+		fitColumns:true,
+		columns:[[
+		          {field:'id',title:'主键',width:100,align:"center"},
+		          {field:'productName',title:'商品名称',width:150},
+		          {field:'productPrice',title:'商品价格',width:150},
+		          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
+		        	  return "<img src="+row.productImg+">";
+		          }},
+		          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
+		          {field:"categoryCode,",title:"父类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,width:200,valueField:"categoryCode",textField:"categoryName",onSelect:function(data){
+		        	  console.log(data)
+		          }}}},
+		          {field:"categoryCode,",title:"子类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName"}}},
+		          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
+		        	  if (row.editing){
+	                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
+	                      var c = '<a href="javascript:void(0)" onclick="cancelrow(this)">取消</a>';
+	                      return s+c;
+	                  } else {
+	                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
+	                      var a = "<a href='javascript:void(0)' data='"+row.id+"' onclick='detailrow(this)'>详情</a> ";
+	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
+	                      return e+a+d;
+	                  }
+		          }}
+		        ]],
+		onBeforeLoad:function(param){
+			
+		},
+		onLoadSuccess:function(data){
+			
+		},
+		onLoadError:function(){
+			
+		},
+		onDblClickRow:function(index,field){
+		},
+		onCancelEdit:function(index,row){
+			row.editing = false;
+			$(this).datagrid('refreshRow', index);
+		},
+		onBeforeEdit:function(index,row){
+	        row.editing = true;
+	        $(this).datagrid('refreshRow', index);
+	    },
+	    onAfterEdit:function(index,row){
+	        row.editing = false;
+	        $(this).datagrid('refreshRow', index);
+	    },
+	    onEndEdit:function(index,row){
+	    	
+	    }
+	});
+	
 });
+function editrow(target){
+    $('#tbProSett').datagrid('beginEdit', getRowIndex(target));
+}
 </script>
 </body>
 </html>

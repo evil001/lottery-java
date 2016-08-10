@@ -35,17 +35,14 @@
 			<if test="categoryCode !=null and categoryCode !=''">
 				#{categoryCode},
 			</if>
-			<if test="productPrice != null and productPrice !=''">
-				#{productPrice},
+			<if test="state != null">
+				#{state},
 			</if>
 			<if test="createAt != null">
 				NOW(),
 			</if>
 			<if test="createUser != null and createUser !=''">
 				#{createUser},
-			</if>
-			<if test="state != null">
-				#{state},
 			</if>
 			<if test="updateAt !=null">
 				#{updateAt},
@@ -114,7 +111,12 @@
 	</insert>
 	
 	<!-- 查询父分类 -->
-	<select id="getCategory" parameterType="Category">
-		SELECT c.category_name,c.caregory_code FROM tl_category c WHERE c.state = 1
+	<select id="getCategory" resultType="Category">
+		SELECT c.category_name categoryName,c.category_code categoryCode FROM tl_category c WHERE c.state = 1
+	</select>
+	
+	<!-- 根据父类查询子类 -->
+	<select id="getProdTypeByCategoryCode" parameterType="String" resultType="ProdType">
+		SELECT pt.category_code,pt.type_name,pt.type_code FROM tl_prod_type pt WHERE pt.state = 1 AND pt.category_code = #{categoryCode}
 	</select>
 </mapper>

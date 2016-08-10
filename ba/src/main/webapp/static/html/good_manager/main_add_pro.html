@@ -87,7 +87,29 @@
 			$("#some_file_queue").hide();
 		}
 	});
+	$("#addProFrom").form({
+		url:'/prod/saveProduct',
+		onSubmit:function(){
+			return $("#addProFrom").form('validate');
+		},
+		success:function(data){
+			var dataJson = JSON.parse(data);
+			if(dataJson.responseCode == 10000){
+				$.messager.confirm('系统提示','商品添加成功',function(r){
+				    if (r){
+				    	$("img").attr("src","");
+				    }
+				});
+				$("#addProFrom").form('clear');
+			}
+		}
+	});
 	
+	$("#addProFrom").submit();
+	
+	$("#restBtn").click(function(){
+		$("#addProFrom").form('clear');
+	});
 	
 </script>
 </body>
