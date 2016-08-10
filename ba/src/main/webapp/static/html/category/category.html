@@ -55,7 +55,7 @@
 </div>
 <script type="text/javascript">
 $(function(){
-	var category={};
+	var category;
 	$("#fAddForm").form({
 		url:"/category/save",
 		onSubmit:function(){
@@ -87,7 +87,6 @@ $(function(){
 	$("#sAddform").submit();
 	
 	$.get("/category/all",function(json){
-		category = json;
 		$("#selCate").combobox({
 			data:json.data,
 			width:150,
@@ -106,7 +105,14 @@ $(function(){
 			}
 		});
 	});
-	console.log(category)
+	$.ajax({
+		type:"GET",
+		url:"/category/all",
+		async:false,
+		success:function(data){
+			category = data;
+		}
+	});
 	$("#tbProSett").datagrid({
 		fit:true,
 		url:'/prod/query',
@@ -130,10 +136,16 @@ $(function(){
 		        	  return "<img src="+row.productImg+">";
 		          }},
 		          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
-		          {field:"categoryCode,",title:"父类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,width:200,valueField:"categoryCode",textField:"categoryName",onSelect:function(data){
-		        	  console.log(data)
+		          {field:"categoryCode,",title:"父类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName",onSelect:function(data){
+		        	  var row = $("#tbProSett").datagrid("getSelected");
+		        	  var rowIndex = $("#tbProSett").datagrid("getRowIndex",row);
+		        	  console.log(row)
+		        	  console.log(rowIndex)
+		        	  var target = $("#tbProSett").datagrid("getEditor",{"index":rowIndex,"field":"typeCode"}).target;
+		        	  target.combobox("clear");
+		        	  target.combobox("reload","/category/type/all?categoryCode="+data.categoryCode);
 		          }}}},
-		          {field:"categoryCode,",title:"子类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName"}}},
+		          {field:"typeCode,",title:"子类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName"}}},
 		          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
 		        	  if (row.editing){
 	                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
@@ -141,21 +153,11 @@ $(function(){
 	                      return s+c;
 	                  } else {
 	                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
-	                      var a = "<a href='javascript:void(0)' data='"+row.id+"' onclick='detailrow(this)'>详情</a> ";
 	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
-	                      return e+a+d;
+	                      return e+d;
 	                  }
 		          }}
 		        ]],
-		onBeforeLoad:function(param){
-			
-		},
-		onLoadSuccess:function(data){
-			
-		},
-		onLoadError:function(){
-			
-		},
 		onDblClickRow:function(index,field){
 		},
 		onCancelEdit:function(index,row){
@@ -176,8 +178,13 @@ $(function(){
 	});
 	
 });
+
 function editrow(target){
     $('#tbProSett').datagrid('beginEdit', getRowIndex(target));
+}
+
+function cancelrow(target){
+    $('#tbProSett').datagrid('cancelEdit', getRowIndex(target));
 }
 </script>
 </body>
