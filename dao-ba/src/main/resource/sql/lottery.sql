@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-08-09 18:15:12
+Date: 2016-08-10 18:30:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,18 +22,19 @@ DROP TABLE IF EXISTS `tl_category`;
 CREATE TABLE `tl_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(50) DEFAULT NULL COMMENT '父分类名称',
-  `caregory_code` varchar(50) DEFAULT NULL COMMENT '父分类编号',
+  `category_code` varchar(50) DEFAULT NULL COMMENT '父分类编号',
   `state` int(11) DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
   `create_user` varchar(50) DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_category
 -- ----------------------------
+INSERT INTO `tl_category` VALUES ('1', '手机数码', 'P1000', '1', '2016-08-10 15:38:50', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_img_collection
@@ -165,11 +166,12 @@ CREATE TABLE `tl_prod_type` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_prod_type
 -- ----------------------------
+INSERT INTO `tl_prod_type` VALUES ('2', 'P1000', '手机', 'S1000', '1', '2016-08-10 17:31:26', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_purchase_cfg
