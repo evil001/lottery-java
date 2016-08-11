@@ -55,7 +55,7 @@
 </div>
 <script type="text/javascript">
 $(function(){
-	var category;
+	var category,datagrid;
 	$("#fAddForm").form({
 		url:"/category/save",
 		onSubmit:function(){
@@ -66,6 +66,8 @@ $(function(){
 			if(dataJson.responseCode == 10000){
 				$.messager.confirm('系统提示','父分类添加成功');
 				$("#fAddForm").form('clear');
+			}else{
+				$.messager.confirm('系统提示','父分类添加失败');
 			}
 		}
 	});
@@ -81,6 +83,8 @@ $(function(){
 			if(dataJson.responseCode == 10000){
 				$.messager.confirm('系统提示','子分类添加成功');
 				$("#sAddform").form('clear');
+			}else{
+				$.messager.confirm('系统提示','子分类添加失败');
 			}
 		}
 	});
@@ -113,7 +117,7 @@ $(function(){
 			category = data;
 		}
 	});
-	$("#tbProSett").datagrid({
+	datagrid = $("#tbProSett").datagrid({
 		fit:true,
 		url:'/prod/query',
 		align:"center",
@@ -128,6 +132,7 @@ $(function(){
 		nowrap:true,
 		numbers:true,
 		fitColumns:true,
+		singleSelect:true,
 		columns:[[
 		          {field:'id',title:'主键',width:100,align:"center"},
 		          {field:'productName',title:'商品名称',width:150},
@@ -136,16 +141,37 @@ $(function(){
 		        	  return "<img src="+row.productImg+">";
 		          }},
 		          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
-		          {field:"categoryCode,",title:"父类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName",onSelect:function(data){
-		        	  var row = $("#tbProSett").datagrid("getSelected");
-		        	  var rowIndex = $("#tbProSett").datagrid("getRowIndex",row);
-		        	  console.log(row)
-		        	  console.log(rowIndex)
-		        	  var target = $("#tbProSett").datagrid("getEditor",{"index":rowIndex,"field":"typeCode"}).target;
-		        	  target.combobox("clear");
-		        	  target.combobox("reload","/category/type/all?categoryCode="+data.categoryCode);
+		          {field:"categoryCode,",title:"父类",width:100,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName",editable:false,onSelect:function(data){
+		        	  var row = datagrid.datagrid("getSelections");  
+                      var rowIndex = datagrid.datagrid('getRowIndex', row[0]);
+                      var ed = datagrid.datagrid('getEditors',rowIndex)[1].target;
+		        	  ed.combobox("clear");
+		        	  ed.combobox("reload","/category/type/all?categoryCode="+data.categoryCode);
 		          }}}},
-		          {field:"typeCode,",title:"子类",width:150,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName"}}},
+		          {field:"typeCode,",title:"子类",width:100,align:"center",editor:{type:"combobox",options:{valueField:"typeCode",textField:"typeName",editable:false,onLoadSuccess:function(){
+		        	  var data = $(this).combobox('getData');
+		              if (data.length > 0) {
+		                  $(this).combobox('select', data[0].typeCode);
+		              }
+		          }}}},
+		          {field:"isHot",title:"热门推荐",width:100,align:"center",editor:{type:"combobox",options:{
+		        	  editable:false,
+		        	  data:[
+		        	        {"isHotTitle":"否","isHot":0},
+		        	        {"isHotTitle":"是","isHot":1}
+		        	        ],
+		        	  textField:"isHotTitle",
+		        	  valueField:"isHot"
+		          }}},
+		          {field:"isNew",title:"新品上架",width:100,align:"center",editor:{type:"combobox",options:{
+		        	  editable:false,
+		        	  data:[
+		        	        {"isNewTitle":"否","isNew":0},
+		        	        {"isNewTitle":"是","isNew":1}
+		        	        ],
+		        	  textField:"isNewTitle",
+		        	  valueField:"isNew"
+		          }}},
 		          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
 		        	  if (row.editing){
 	                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
@@ -158,6 +184,10 @@ $(function(){
 	                  }
 		          }}
 		        ]],
+		onClickRow:function(index,field){
+ 			field.editing = false;
+	        $(this).datagrid('refreshRow', index);
+		},
 		onDblClickRow:function(index,field){
 		},
 		onCancelEdit:function(index,row){
@@ -169,11 +199,12 @@ $(function(){
 	        $(this).datagrid('refreshRow', index);
 	    },
 	    onAfterEdit:function(index,row){
-	        row.editing = false;
+	        row.editing = true;
 	        $(this).datagrid('refreshRow', index);
 	    },
 	    onEndEdit:function(index,row){
-	    	
+	    	row.editing = true;
+	        $(this).datagrid('refreshRow', index);
 	    }
 	});
 	
