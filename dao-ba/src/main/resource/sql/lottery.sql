@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-08-10 18:30:47
+Date: 2016-08-11 18:21:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `tl_category` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_category
@@ -95,6 +95,7 @@ CREATE TABLE `tl_product` (
   `product_name` varchar(50) DEFAULT NULL COMMENT '商品名称',
   `product_desc` varchar(255) DEFAULT NULL COMMENT '商品描述',
   `product_price` double DEFAULT NULL COMMENT '商品价格',
+  `is_show` int(11) DEFAULT '1' COMMENT '是否显示，默认1显示',
   `product_img` varchar(50) DEFAULT NULL COMMENT '封面图片',
   `create_at` datetime DEFAULT NULL COMMENT '创建时间',
   `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
@@ -107,7 +108,7 @@ CREATE TABLE `tl_product` (
 -- ----------------------------
 -- Records of tl_product
 -- ----------------------------
-INSERT INTO `tl_product` VALUES ('5', '苹果（Apple）iPhone 6s 16G版 4G手机', '有些礼物，能瞬间抓住人心，唯一的不同，是处处都不同！（颜色随机发）', '6400', null, '2016-07-26 15:21:11', null, '1', null, null);
+INSERT INTO `tl_product` VALUES ('5', '苹果（Apple）iPhone 6s 16G版 4G手机', '有些礼物，能瞬间抓住人心，唯一的不同，是处处都不同！（颜色随机发）', '6400', '1', null, '2016-07-26 15:21:11', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for tl_product_detail
@@ -129,6 +130,29 @@ CREATE TABLE `tl_product_detail` (
 -- Records of tl_product_detail
 -- ----------------------------
 INSERT INTO `tl_product_detail` VALUES ('1', '5', '<img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142414922.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142430728.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142449625.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142506208.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142523544.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142540444.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142555673.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142611240.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142627466.jpg\" alt=\"\" />', '1', '2016-08-05 14:56:37', null, null, null);
+
+-- ----------------------------
+-- Table structure for tl_product_f
+-- ----------------------------
+DROP TABLE IF EXISTS `tl_product_f`;
+CREATE TABLE `tl_product_f` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_id` bigint(20) DEFAULT NULL,
+  `category_code` varchar(50) DEFAULT NULL COMMENT '父类编号',
+  `type_code` varchar(50) DEFAULT NULL COMMENT '子类编号',
+  `is_hot` int(11) DEFAULT NULL COMMENT '热门推荐',
+  `is_new` int(11) DEFAULT NULL COMMENT '最新商品',
+  `state` int(11) DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  `create_user` varchar(50) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `update_user` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tl_product_f
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tl_product_img
@@ -166,7 +190,7 @@ CREATE TABLE `tl_prod_type` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_prod_type
