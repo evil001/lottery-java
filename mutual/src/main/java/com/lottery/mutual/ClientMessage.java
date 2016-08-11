@@ -43,7 +43,7 @@ public class ClientMessage {
 	}
 
 	public static ClientMessage faild(Object data, int errorCode) {
-		return new ClientMessage(data, errorCode, null, responseCode);
+		return new ClientMessage(data, errorCode, null, 10005);
 	}
 
 	public ClientMessage(Object data, String errorMsg) {

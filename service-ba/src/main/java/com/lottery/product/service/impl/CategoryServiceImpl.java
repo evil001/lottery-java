@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<ProdType> getProdTypeByCategory(String categoryCode) {
-		return this.getProdTypeByCategory(categoryCode);
+		return this.categoryDao.getProdTypeByCategoryCode(categoryCode);
 	}
 
 }
