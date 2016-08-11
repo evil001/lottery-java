@@ -117,6 +117,6 @@
 	
 	<!-- 根据父类查询子类 -->
 	<select id="getProdTypeByCategoryCode" parameterType="String" resultType="ProdType">
-		SELECT pt.category_code,pt.type_name,pt.type_code FROM tl_prod_type pt WHERE pt.state = 1 AND pt.category_code = #{categoryCode}
+		SELECT pt.category_code categoryCode,pt.type_name typeName,pt.type_code typeCode FROM tl_prod_type pt WHERE pt.state = 1 AND pt.category_code = #{categoryCode}
 	</select>
 </mapper>
