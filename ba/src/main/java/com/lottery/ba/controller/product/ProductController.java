@@ -1,5 +1,7 @@
 package com.lottery.ba.controller.product;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
+import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
 import com.lottery.mutual.ClientMessage;
 import com.lottery.mutual.EasyUIMessage;
@@ -119,5 +122,12 @@ public class ProductController {
 	public EasyUIMessage getProductCollectImg(String productName, int state, String startTime, String endTime,
 			ParamPage param) {
 		return this.productService.getProductCollect(productName, state, startTime, endTime, param);
+	}
+
+	@RequestMapping("/prod/f/save")
+	public ClientMessage saveProductF(ProductF prod) {
+		prod.setCreateAt(new Date());
+		this.productService.saveProductF(prod);
+		return ClientMessage.success();
 	}
 }

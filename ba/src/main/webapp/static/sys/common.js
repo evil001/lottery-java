@@ -124,3 +124,34 @@ function getRowIndex(target){
     return parseInt(tr.attr('datagrid-row-index'));
 }
 
+$.extend($.fn.datagrid.defaults.editors, {
+    button: {//colorpicker就是你要自定义editor的名称
+        init: function (container, options) {
+            var editorContainer = $("<div/>");
+            var button = $("<a href='javascript:void(0)' onclick='aUpload(this)'>"+options.title+"</a>").linkbutton({plain:true});
+            editorContainer.append(button);  
+            editorContainer.appendTo(container);  
+            return button;  
+        },
+        getValue: function (target) {
+            return $(target).val();
+        },
+        setValue: function (target, value) {
+            $(target).val(value);
+            $(target).css('backgroundColor', value);
+        },
+        resize: function (target, width) {
+            var input = $(target);
+            if ($.boxModel == true) {
+                input.width(width - (input.outerWidth() - input.width()));
+            } else {
+                input.width(width);
+            }
+        }
+    }
+});
+
+function isEmpty(value) {
+  return (Array.isArray(value) && value.length === 0) 
+      || (Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0);
+}

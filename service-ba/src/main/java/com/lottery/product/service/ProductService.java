@@ -2,6 +2,7 @@ package com.lottery.product.service;
 
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
+import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
 import com.lottery.mutual.EasyUIMessage;
 
@@ -30,4 +31,11 @@ public interface ProductService {
 	 */
 	public EasyUIMessage getProductCollect(String productName, int state, String startTime, String endTime,
 			ParamPage param);
+
+	/**
+	 * 保存商品到列表
+	 * 
+	 * @param product
+	 */
+	public void saveProductF(ProductF product);
 }

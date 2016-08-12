@@ -16,6 +16,10 @@ $(function(){
 	});
 	
 	$("#aCategory").click(function(){
-		addTab('divTabs','分类管理','static/html/category/category.html')
+		addTab('divTabs','分类管理','static/html/cms/category.html')
+	});
+	
+	$("#aBanner").click(function(){
+		addTab('divTabs','banner管理','static/html/cms/banner_manager.html')
 	});
 });

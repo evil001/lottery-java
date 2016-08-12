@@ -141,14 +141,14 @@ $(function(){
 		        	  return "<img src="+row.productImg+">";
 		          }},
 		          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
-		          {field:"categoryCode,",title:"父类",width:100,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName",editable:false,onSelect:function(data){
+		          {field:"categoryCode",title:"父类",width:100,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName",editable:false,onSelect:function(data){
 		        	  var row = datagrid.datagrid("getSelections");  
                       var rowIndex = datagrid.datagrid('getRowIndex', row[0]);
                       var ed = datagrid.datagrid('getEditors',rowIndex)[1].target;
 		        	  ed.combobox("clear");
 		        	  ed.combobox("reload","/category/type/all?categoryCode="+data.categoryCode);
 		          }}}},
-		          {field:"typeCode,",title:"子类",width:100,align:"center",editor:{type:"combobox",options:{valueField:"typeCode",textField:"typeName",editable:false,onLoadSuccess:function(){
+		          {field:"typeCode",title:"子类",width:100,align:"center",editor:{type:"combobox",options:{valueField:"typeCode",textField:"typeName",editable:false,onLoadSuccess:function(){
 		        	  var data = $(this).combobox('getData');
 		              if (data.length > 0) {
 		                  $(this).combobox('select', data[0].typeCode);
@@ -203,12 +203,27 @@ $(function(){
 	        $(this).datagrid('refreshRow', index);
 	    },
 	    onEndEdit:function(index,row){
-	    	row.editing = true;
-	        $(this).datagrid('refreshRow', index);
+	    	var pro = {
+	    		productId : row.id,
+	    		categoryCode : row.categoryCode,
+	    		typeCode : row.typeCode,
+	    		isHot : row.isHot,
+	    		isNew : row.isNew
+	    	}
+	    	console.log(row)
+	    	console.log(pro)
+	    	$.get("/prod/f/save",pro,function(data){
+	    		if(data.responseCode == 10000)
+	    			$.messager.confirm('系统提示','添加成功');
+	    	});
 	    }
 	});
 	
 });
+
+function saverow(target){
+	$('#tbProSett').datagrid('endEdit', getRowIndex(target));
+}
 
 function editrow(target){
     $('#tbProSett').datagrid('beginEdit', getRowIndex(target));

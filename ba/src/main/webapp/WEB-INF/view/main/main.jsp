@@ -24,6 +24,7 @@
 		<div class="easyui-accordion" fit="true" style="width: 100%px;">
 			<div title="CMS">
 				<a href="#" id="aCategory" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">分类管理</a>
+				<a href="#" id="aBanner" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">Banner管理</a>
 			</div>
 			<div title="商品管理" style="text-align: -webkit-center;">
 				<a href="#" id="aAddPro" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">添加商品</a>

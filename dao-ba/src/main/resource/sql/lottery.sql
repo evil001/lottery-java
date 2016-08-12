@@ -10,10 +10,32 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-08-11 18:21:31
+Date: 2016-08-12 18:06:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for tl_banner
+-- ----------------------------
+DROP TABLE IF EXISTS `tl_banner`;
+CREATE TABLE `tl_banner` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `img_url` varchar(100) DEFAULT NULL,
+  `img_width` int(11) DEFAULT NULL,
+  `img_height` int(11) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  `create_user` varchar(50) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `update_user` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tl_banner
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tl_category
@@ -148,11 +170,12 @@ CREATE TABLE `tl_product_f` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_product_f
 -- ----------------------------
+INSERT INTO `tl_product_f` VALUES ('5', '5', 'P1000', 'S1000', '1', '1', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_product_img

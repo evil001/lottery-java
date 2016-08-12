@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.banner.BannerDao" >
+	
+	<!-- banner管理 -->
+	<select id="getBannerList" resultType="BannerInfo">
+		SELECT b.title,b.img_url imgUrl,b.img_width imgWidth,b.img_height imgHeight,b.create_at createAt FROM tl_banner b
+	</select>
+</mapper>

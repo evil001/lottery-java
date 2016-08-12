@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Banner 管理</title>
+</head>
+<body class="easyui-layout" data-options="split:false,fit:true">
+<div style="height: 100%;">
+	<table id="tbQueryBanner"></table>
+</div>
+<div id="dialogUploadDiv" style="top: 30px;"></div>
+<input type="hidden" id="inBanner">
+<script type="text/javascript">
+var editRow = undefined;
+$("#tbQueryBanner").datagrid({
+	url:'/cms/banner',
+	fit:true,
+	align:"center",
+	beginEdit:1,
+	sortName:'createAt',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+	          {field:'id',title:"主键",width:100,align:"center"},
+	          {field:"title",title:"标题",width:150,align:"center",editor:{type:"text",options:{required:false}}},
+	          {field:"imgUrl",title:"图片",width:150,align:"center",formatter:function(value,row,index){
+	        	  if(isEmpty(row))
+	        		  return "<img />";
+	        	  return "<img src="+row.imgUrl+">";
+	          	},editor:{type:"button",options:{title:"上传"}}
+	          },
+	          {field:"imgWidth",title:"图片宽度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
+	          {field:"imgHeight",title:"图片高度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
+	          {field:"createAt",title:"创建时间",width:150,align:"center"}
+	          ]],
+	toolbar:[{
+		text:"添加",iconCls:"icon-add",handler:function(){
+			if(editRow != undefined){
+				$("#tbQueryBanner").datagrid("endEdit",editRow);
+			}
+			if(editRow == undefined){
+				$("#tbQueryBanner").datagrid("insertRow",{
+					index:0,
+					row:{}
+				});
+				
+				$("#tbQueryBanner").datagrid("beginEdit",0);
+				editRow = 0;
+			}
+		}
+	},'-',{
+		text:"保存",iconCls:"icon-save",handler:function(){
+			$("#tbQueryBanner").datagrid('endEdit', editRow);
+			var rows = $("#tbQueryBanner").datagrid('getChanges');
+			var rowstr = JSON.stringify(rows);
+			console.log(rows);
+		}
+	},'-',{
+		text:"撤销",iconCls:"icon-redo",handler:function(){
+			editRow = undefined;
+			$("#tbQueryBanner").datagrid("rejectChanges");
+			$("#tbQueryBanner").datagrid("unselectAll");
+		}
+	},'-',{
+		text:"删除",iconCls:"icon-remove",handler:function(){
+			var row = $("#tbQueryBanner").datagrid("getSelections");
+			console.log(row)
+		}
+	}],
+	onAfterEdit:function(rowIndex,rowData,changes){
+		editRow = undefined;
+	},
+	onDbClickRow:function(rowIndex,rowData){
+		if(editRow != undefined){
+			$("#tbQueryBanner").datagrid("endEdit",editRow);
+		}
+		
+		if(editRow == undefined){
+			$("#tbQueryBanner").datagrid("beginEdit",rowIndex);
+			editRow = rowIndex;
+		}
+	},onClickRow:function(rowIndex,rowData){
+		if(editRow != undefined){
+			$("#tbQueryBanner").datagrid("endEdit",editRow);
+		}
+	}
+});
+
+function aUpload(target){
+	$("#dialogUploadDiv").dialog({
+		title:"封面上传",
+		width:500,
+		height:400,
+		closed:true,
+		href:"static/html/good_manager/upload_img.html",
+		modal:true,
+		buttons:[{
+			text:"确定",
+			iconCls:"icon-ok",
+			handler:function(){
+				$.get("/update",img,function(data){
+					console.log(data)
+					if(data.responseCode == 10000){
+						$("#dialogUploadDiv").dialog("close");
+						$("#inBanner").val(data)
+					}
+				})
+				}
+			},{
+			text:"取消",
+			iconCls:"icon-cancel",
+			handler:function(){
+				$("#dialogUploadDiv").dialog("close");
+			}
+		}]
+	});
+	$("#dialogUploadDiv").dialog("open");
+}
+</script>
+</body>
+</html>

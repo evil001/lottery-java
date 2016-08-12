@@ -18,6 +18,7 @@ import com.lottery.dao.product.img.ProductImgDao;
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
 import com.lottery.domain.prod.ProductDetail;
+import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
 import com.lottery.domain.prod.ProductImgCollect;
 import com.lottery.mutual.EasyUIMessage;
@@ -99,6 +100,11 @@ public class ProductServiceImpl implements ProductService {
 				endTime);
 		PageInfo<ProductImgCollect> pageInfo = new PageInfo<ProductImgCollect>(list);
 		return EasyUIMessage.easyJson(pageInfo.getTotal(), list);
+	}
+
+	@Override
+	public void saveProductF(ProductF product) {
+		this.productDao.saveProductF(product);
 	}
 
 }
