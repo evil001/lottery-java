@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lottery.domain.ParamPage;
+import com.lottery.domain.banner.BannerInfo;
+import com.lottery.mutual.ClientMessage;
 import com.lottery.mutual.EasyUIMessage;
 import com.lottery.product.service.BannerService;
 
@@ -17,5 +19,11 @@ public class BannerController {
 	@RequestMapping("/cms/banner")
 	public EasyUIMessage getBannerList(ParamPage param) {
 		return this.bannerService.getBannerList(param);
+	}
+
+	@RequestMapping("/cms/banner/save")
+	public ClientMessage saveBanner(BannerInfo banner) {
+		this.bannerService.saveBanner(banner);
+		return ClientMessage.success();
 	}
 }

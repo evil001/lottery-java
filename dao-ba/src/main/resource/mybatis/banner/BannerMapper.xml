@@ -6,4 +6,67 @@
 	<select id="getBannerList" resultType="BannerInfo">
 		SELECT b.title,b.img_url imgUrl,b.img_width imgWidth,b.img_height imgHeight,b.create_at createAt FROM tl_banner b
 	</select>
+	
+	<!-- saveBanner -->
+	<insert id="saveBanner" parameterType="BannerInfo" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO tl_banner
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="title != null and title != ''">
+				title,
+			</if>
+			<if test="imgUrl != null and imgUrl != ''">
+				img_url,
+			</if>
+			<if test="imgWidth != null">
+				img_width,
+			</if>
+			<if test="imgHeight != null">
+				img_height,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="createAt != null">
+				create_at,
+			</if>
+			<if test="createUser != null and createUser !=''">
+				create_user,
+			</if>
+			<if test="updateAt != null">
+				update_at,
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="title != null and title != ''">
+				#{title},
+			</if>
+			<if test="imgUrl != null and imgUrl != ''">
+				#{imgUrl},
+			</if>
+			<if test="imgWidth != null">
+				#{imgWidth},
+			</if>
+			<if test="imgHeight != null">
+				#{imgHeight},
+			</if>
+			<if test="state != null">
+				#{state},
+			</if>
+			<if test="createAt != null">
+				NOW(),
+			</if>
+			<if test="createUser != null and createUser !=''">
+				#{createUser},
+			</if>
+			<if test="updateAt != null">
+				#{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				#{updateUser},
+			</if>
+		</trim>
+	</insert>
 </mapper>

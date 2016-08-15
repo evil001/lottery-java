@@ -12,7 +12,8 @@
 <input type="hidden" id="inBanner">
 <script type="text/javascript">
 var editRow = undefined;
-$("#tbQueryBanner").datagrid({
+var datagrid;
+datagrid = $("#tbQueryBanner").datagrid({
 	url:'/cms/banner',
 	fit:true,
 	align:"center",
@@ -33,12 +34,12 @@ $("#tbQueryBanner").datagrid({
 	          {field:"imgUrl",title:"图片",width:150,align:"center",formatter:function(value,row,index){
 	        	  if(isEmpty(row))
 	        		  return "<img />";
-	        	  return "<img src="+row.imgUrl+">";
+	        	  return "<img src="+row.imgUrl+"-80x80>";
 	          	},editor:{type:"button",options:{title:"上传"}}
 	          },
 	          {field:"imgWidth",title:"图片宽度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
 	          {field:"imgHeight",title:"图片高度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
-	          {field:"createAt",title:"创建时间",width:150,align:"center"}
+	          {field:"createAt",title:"创建时间",width:150,align:"center",formatter:formatDateYmdHms}
 	          ]],
 	toolbar:[{
 		text:"添加",iconCls:"icon-add",handler:function(){
@@ -61,6 +62,10 @@ $("#tbQueryBanner").datagrid({
 			var rows = $("#tbQueryBanner").datagrid('getChanges');
 			var rowstr = JSON.stringify(rows);
 			console.log(rows);
+			rows[0].imgUrl = $("#inAllImg").val();
+			rows[0].createAt = new Date();
+			$.get("/cms/banner/save",rows[0]);
+			datagrid.datagrid("reload");
 		}
 	},'-',{
 		text:"撤销",iconCls:"icon-redo",handler:function(){
@@ -105,13 +110,7 @@ function aUpload(target){
 			text:"确定",
 			iconCls:"icon-ok",
 			handler:function(){
-				$.get("/update",img,function(data){
-					console.log(data)
-					if(data.responseCode == 10000){
-						$("#dialogUploadDiv").dialog("close");
-						$("#inBanner").val(data)
-					}
-				})
+					$("#dialogUploadDiv").dialog("close");
 				}
 			},{
 			text:"取消",

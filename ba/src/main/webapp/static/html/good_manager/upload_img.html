@@ -34,6 +34,7 @@
 	</tr>
 </table>
 <input type="hidden" id="inImg">
+<input type="hidden" id="inAllImg">
 </form>
 </div>
 <script type="text/javascript">
@@ -53,6 +54,7 @@ $("#files").uploadify({
 		var dataJson = JSON.parse(data);
 		$("#prevImg").attr("src",dataJson.data+"-80x80");
 		$("#inImg").val(dataJson.data+"-80x80");
+		$("#inAllImg").val(dataJson.data);
 	},
 	'onInit'	:function(){
 		$("#some_file_queue").hide();

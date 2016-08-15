@@ -28,4 +28,9 @@ public class BannerServiceImpl implements BannerService {
 		return EasyUIMessage.easyJson(page.getTotal(), list);
 	}
 
+	@Override
+	public void saveBanner(BannerInfo banner) {
+		this.bannerDao.saveBanner(banner);
+	}
+
 }

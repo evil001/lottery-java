@@ -10,4 +10,6 @@ import com.lottery.domain.banner.BannerInfo;
 public interface BannerDao {
 
 	List<BannerInfo> getBannerList();
+
+	void saveBanner(BannerInfo banner);
 }
