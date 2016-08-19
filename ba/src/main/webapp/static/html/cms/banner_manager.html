@@ -14,7 +14,7 @@
 var editRow = undefined;
 var datagrid;
 datagrid = $("#tbQueryBanner").datagrid({
-	url:'/cms/banner',
+	url:'/cms/banner?t='+new Date(),
 	fit:true,
 	align:"center",
 	beginEdit:1,
@@ -76,7 +76,12 @@ datagrid = $("#tbQueryBanner").datagrid({
 	},'-',{
 		text:"删除",iconCls:"icon-remove",handler:function(){
 			var row = $("#tbQueryBanner").datagrid("getSelections");
-			console.log(row)
+			$.get("/cms/banner/del?id="+row[0].id,function(data){
+				if(data.responseCode == 10000){
+					$.messager.confirm('系统提示','删除成功');
+					datagrid.datagrid("reload");
+				}
+			});
 		}
 	}],
 	onAfterEdit:function(rowIndex,rowData,changes){

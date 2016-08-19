@@ -4,7 +4,10 @@
 	
 	<!-- banner管理 -->
 	<select id="getBannerList" resultType="BannerInfo">
-		SELECT b.title,b.img_url imgUrl,b.img_width imgWidth,b.img_height imgHeight,b.create_at createAt FROM tl_banner b
+		SELECT b.id,b.title,b.img_url imgUrl,b.img_width imgWidth,b.img_height imgHeight,b.create_at createAt FROM tl_banner b
+		<where>
+			b.state = 1
+		</where>
 	</select>
 	
 	<!-- saveBanner -->
@@ -69,4 +72,41 @@
 			</if>
 		</trim>
 	</insert>
+	
+	<!-- 修改banner管理 -->
+	<update id="updateBanner" parameterType="BannerInfo">
+		UPDATE tl_banner
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="imgUrl != null and imgUrl !=''">
+				img_url = #{imgUrl},
+			</if>
+			<if test="imgWidth != null">
+				img_width = #{imgWidth},
+			</if>
+			<if test="imgHeight != null">
+				img_height = #{imgHeight},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="createAt !=null">
+				create_at = #{createAt},
+			</if>
+			<if test="createUser != null and createUser !=''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateAt != null">
+				update_at = #{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser != ''">
+				update_user = #{updateUser},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
 </mapper>

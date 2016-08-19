@@ -2,7 +2,7 @@ file:
     windows: D:/
     linux  : /var/
 server:
-    port: 8080
+    port: 8081
 spring:
     datasource:
         name: lottery
@@ -35,3 +35,6 @@ spring:
         encoding.charset: UTF-8
         encoding.enable: true
         encoding.force: true
+elasticsearch:
+    host:localhost
+    port:9300

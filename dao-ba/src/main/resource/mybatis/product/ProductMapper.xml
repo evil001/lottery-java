@@ -230,4 +230,33 @@
 			</if>
 		</trim>
 	</insert>
+	
+	<select id="getNewProductF" resultType="Map">
+		SELECT
+		p.id,
+		p.product_name productName,
+		p.product_price productPrice, 
+		pi.product_img productImg,
+		pf.create_at createAt,
+		pf.is_hot isHot,
+		pf.is_new isNew,
+		c.category_name categoryName,
+		c.category_code categoryCode,
+		pt.type_code typeCode,
+		pt.type_name typeName,
+		pf.state
+	FROM
+		tl_product_f pf
+	LEFT JOIN tl_product p ON pf.product_id = p.id
+	LEFT JOIN tl_product_img pi ON p.id = pi.product_id
+	LEFT JOIN tl_category c ON pf.category_code = c.category_code
+	LEFT JOIN tl_prod_type pt ON pf.type_code = pt.type_code
+	WHERE
+		pf.id = (
+			SELECT
+				MAX(id)
+			FROM
+				tl_product_f
+		)
+	</select>
 </mapper>
