@@ -8,14 +8,14 @@
 		<artifactId>lottery</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<groupId>com.lottery</groupId>
 	<artifactId>ba</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ba Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.lottery</groupId>
@@ -25,6 +25,11 @@
 		<dependency>
 			<groupId>com.lottery</groupId>
 			<artifactId>service-ba</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lottery</groupId>
+			<artifactId>es_app</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -54,7 +59,7 @@
 			<version>${spring.mybatis.version}</version>
 		</dependency>
 		<!-- mybatis page plugin -->
-		<dependency> 
+		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper</artifactId>
 			<version>${mybatis.page.version}</version>
