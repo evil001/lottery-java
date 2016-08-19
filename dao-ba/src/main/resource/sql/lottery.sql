@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-08-12 18:06:40
+Date: 2016-08-19 18:08:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,11 +31,13 @@ CREATE TABLE `tl_banner` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_banner
 -- ----------------------------
+INSERT INTO `tl_banner` VALUES ('1', '测试', 'http://7vih7a.com1.z0.glb.clouddn.com/IMG_0204.JPG', '700', '300', '1', '2016-08-15 10:38:52', null, null, null);
+INSERT INTO `tl_banner` VALUES ('2', '测试2', 'http://7vih7a.com1.z0.glb.clouddn.com/IMG_0205 (1).JPG', '700', '300', '0', '2016-08-15 11:26:41', null, '2016-08-15 15:08:57', null);
 
 -- ----------------------------
 -- Table structure for tl_category
@@ -51,7 +53,7 @@ CREATE TABLE `tl_category` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_category
@@ -213,7 +215,7 @@ CREATE TABLE `tl_prod_type` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_prod_type
