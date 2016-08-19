@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.lottery</groupId>
+		<artifactId>lottery</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.lottery</groupId>
+	<artifactId>es_app</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>es_app</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<elasticsearch.v>2.3.5</elasticsearch.v>
+		<spring.es.fr.v>2.1.0</spring.es.fr.v>
+		<spring.data.es.v>2.0.0.RELEASE</spring.data.es.v>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.v}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>fr.pilato.spring</groupId>
+			<artifactId>spring-elasticsearch</artifactId>
+			<version>${spring.es.fr.v}</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>${elasticsearch.v}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
+			<version>${spring.data.es.v}</version>
+		</dependency> -->
+		<dependency>
+			<groupId>com.lottery</groupId>
+			<artifactId>dao-ba</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>
