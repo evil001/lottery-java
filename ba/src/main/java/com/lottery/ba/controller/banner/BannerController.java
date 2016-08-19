@@ -26,4 +26,10 @@ public class BannerController {
 		this.bannerService.saveBanner(banner);
 		return ClientMessage.success();
 	}
+
+	@RequestMapping("/cms/banner/del")
+	public ClientMessage delBanner(Long id) {
+		this.bannerService.deleteBanner(id);
+		return ClientMessage.success();
+	}
 }

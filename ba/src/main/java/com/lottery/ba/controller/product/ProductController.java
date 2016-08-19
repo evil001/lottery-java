@@ -1,6 +1,7 @@
 package com.lottery.ba.controller.product;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
 import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
+import com.lottery.es.service.ESService;
 import com.lottery.mutual.ClientMessage;
 import com.lottery.mutual.EasyUIMessage;
 import com.lottery.product.service.ProductService;
@@ -21,6 +24,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private ESService esService;
 
 	/**
 	 * 保存产品信息
@@ -128,6 +134,8 @@ public class ProductController {
 	public ClientMessage saveProductF(ProductF prod) {
 		prod.setCreateAt(new Date());
 		this.productService.saveProductF(prod);
+		Map<String, Object> map = this.productService.getNewProductF();
+		this.esService.createIndexResponse("product", "goods", JSONObject.toJSONString(map));
 		return ClientMessage.success();
 	}
 }

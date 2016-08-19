@@ -107,4 +107,9 @@ public class ProductServiceImpl implements ProductService {
 		this.productDao.saveProductF(product);
 	}
 
+	@Override
+	public Map<String, Object> getNewProductF() {
+		return this.productDao.getNewProductF();
+	}
+
 }

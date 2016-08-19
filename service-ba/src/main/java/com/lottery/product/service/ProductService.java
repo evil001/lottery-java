@@ -1,5 +1,7 @@
 package com.lottery.product.service;
 
+import java.util.Map;
+
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
 import com.lottery.domain.prod.ProductF;
@@ -38,4 +40,11 @@ public interface ProductService {
 	 * @param product
 	 */
 	public void saveProductF(ProductF product);
+
+	/**
+	 * 获取最新商品
+	 * 
+	 * @return
+	 */
+	Map<String, Object> getNewProductF();
 }

@@ -12,4 +12,6 @@ public interface BannerDao {
 	List<BannerInfo> getBannerList();
 
 	void saveBanner(BannerInfo banner);
+
+	void updateBanner(BannerInfo banner);
 }

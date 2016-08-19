@@ -1,5 +1,6 @@
 package com.lottery.product.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,15 @@ public class BannerServiceImpl implements BannerService {
 	@Override
 	public void saveBanner(BannerInfo banner) {
 		this.bannerDao.saveBanner(banner);
+	}
+
+	@Override
+	public void deleteBanner(Long id) {
+		BannerInfo bannerInfo = new BannerInfo();
+		bannerInfo.setId(id);
+		bannerInfo.setState(0);
+		bannerInfo.setUpdateAt(new Date());
+		this.bannerDao.updateBanner(bannerInfo);
 	}
 
 }

@@ -9,4 +9,6 @@ public interface BannerService {
 	EasyUIMessage getBannerList(ParamPage param);
 
 	void saveBanner(BannerInfo banner);
+
+	void deleteBanner(Long id);
 }

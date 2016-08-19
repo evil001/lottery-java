@@ -55,4 +55,11 @@ public interface ProductDao {
 	 * 添加商品到列表
 	 */
 	void saveProductF(ProductF productF);
+
+	/**
+	 * 获取最新商品
+	 * 
+	 * @return
+	 */
+	Map<String, Object> getNewProductF();
 }
