@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-08-19 18:08:12
+Date: 2016-08-23 18:27:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,12 +53,21 @@ CREATE TABLE `tl_category` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_category
 -- ----------------------------
 INSERT INTO `tl_category` VALUES ('1', '手机数码', 'P1000', '1', '2016-08-10 15:38:50', null, null, null);
+INSERT INTO `tl_category` VALUES ('2', '电脑办公', 'P1001', '1', '2016-08-22 15:17:20', null, null, null);
+INSERT INTO `tl_category` VALUES ('3', '家用电器', 'P1002', '1', '2016-08-22 15:18:11', null, null, null);
+INSERT INTO `tl_category` VALUES ('4', '钟表首饰', 'P1003', '1', '2016-08-22 15:18:50', null, null, null);
+INSERT INTO `tl_category` VALUES ('5', '食品饮料', 'P1004', '1', '2016-08-22 15:22:40', null, null, null);
+INSERT INTO `tl_category` VALUES ('6', '化妆个护/运动户外', 'P1005', '1', '2016-08-22 15:24:16', null, null, null);
+INSERT INTO `tl_category` VALUES ('7', '家居家纺/礼品箱包', 'P1006', '1', '2016-08-22 15:27:31', null, null, null);
+INSERT INTO `tl_category` VALUES ('8', '母婴/营养保健', 'P1007', '1', '2016-08-22 15:28:28', null, null, null);
+INSERT INTO `tl_category` VALUES ('9', '汽车/房子', 'P1008', '1', '2016-08-22 15:29:01', null, null, null);
+INSERT INTO `tl_category` VALUES ('10', '其他商品', 'P1009', '1', '2016-08-22 15:29:31', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_img_collection
@@ -120,6 +129,10 @@ CREATE TABLE `tl_product` (
   `product_desc` varchar(255) DEFAULT NULL COMMENT '商品描述',
   `product_price` double DEFAULT NULL COMMENT '商品价格',
   `is_show` int(11) DEFAULT '1' COMMENT '是否显示，默认1显示',
+  `is_new` int(11) DEFAULT NULL,
+  `is_hot` int(11) DEFAULT NULL,
+  `type_code` varchar(50) DEFAULT NULL,
+  `category_code` varchar(50) DEFAULT NULL,
   `product_img` varchar(50) DEFAULT NULL COMMENT '封面图片',
   `create_at` datetime DEFAULT NULL COMMENT '创建时间',
   `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
@@ -132,7 +145,7 @@ CREATE TABLE `tl_product` (
 -- ----------------------------
 -- Records of tl_product
 -- ----------------------------
-INSERT INTO `tl_product` VALUES ('5', '苹果（Apple）iPhone 6s 16G版 4G手机', '有些礼物，能瞬间抓住人心，唯一的不同，是处处都不同！（颜色随机发）', '6400', '1', null, '2016-07-26 15:21:11', null, '1', null, null);
+INSERT INTO `tl_product` VALUES ('5', '苹果（Apple）iPhone 6s 16G版 4G手机', '有些礼物，能瞬间抓住人心，唯一的不同，是处处都不同！（颜色随机发）', '6400', '1', null, null, null, null, null, '2016-07-26 15:21:11', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for tl_product_detail
@@ -154,30 +167,6 @@ CREATE TABLE `tl_product_detail` (
 -- Records of tl_product_detail
 -- ----------------------------
 INSERT INTO `tl_product_detail` VALUES ('1', '5', '<img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142414922.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142430728.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142449625.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142506208.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142523544.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142540444.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142555673.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142611240.jpg\" alt=\"\" /><img src=\"http://7vih7a.com1.z0.glb.clouddn.com/20150910142627466.jpg\" alt=\"\" />', '1', '2016-08-05 14:56:37', null, null, null);
-
--- ----------------------------
--- Table structure for tl_product_f
--- ----------------------------
-DROP TABLE IF EXISTS `tl_product_f`;
-CREATE TABLE `tl_product_f` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `product_id` bigint(20) DEFAULT NULL,
-  `category_code` varchar(50) DEFAULT NULL COMMENT '父类编号',
-  `type_code` varchar(50) DEFAULT NULL COMMENT '子类编号',
-  `is_hot` int(11) DEFAULT NULL COMMENT '热门推荐',
-  `is_new` int(11) DEFAULT NULL COMMENT '最新商品',
-  `state` int(11) DEFAULT NULL,
-  `create_at` datetime DEFAULT NULL,
-  `create_user` varchar(50) DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
-  `update_user` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tl_product_f
--- ----------------------------
-INSERT INTO `tl_product_f` VALUES ('5', '5', 'P1000', 'S1000', '1', '1', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_product_img
@@ -215,12 +204,29 @@ CREATE TABLE `tl_prod_type` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_prod_type
 -- ----------------------------
 INSERT INTO `tl_prod_type` VALUES ('2', 'P1000', '手机', 'S1000', '1', '2016-08-10 17:31:26', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('3', 'P1000', '数码', 'S1001', '1', '2016-08-22 15:12:47', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('4', 'P1000', '影音', 'S1002', '1', '2016-08-22 15:13:24', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('5', 'P1000', '耳机', 'S1003', '1', '2016-08-22 15:13:57', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('6', 'P1001', '平板电脑', 'S2000', '1', '2016-08-23 14:39:16', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('7', 'P1001', '笔记本', 'S2001', '1', '2016-08-23 14:40:21', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('8', 'P1001', '配件', 'S2002', '1', '2016-08-23 14:40:51', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('9', 'P1002', '大家电', 'S3000', '1', '2016-08-23 14:41:32', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('10', 'P1002', '空调', 'S3001', '1', '2016-08-23 14:41:49', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('11', 'P1002', '电视', 'S3002', '1', '2016-08-23 14:42:36', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('12', 'P1002', '厨房', 'S3003', '1', '2016-08-23 14:43:22', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('13', 'P1003', '珠宝', 'S4000', '1', '2016-08-23 14:46:05', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('14', 'P1003', '实物黄金', 'S4001', '1', '2016-08-23 14:46:51', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('15', 'P1003', '金银条', 'S4002', '1', '2016-08-23 14:47:30', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('16', 'P1004', '美食', 'S5000', '1', '2016-08-23 14:49:35', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('17', 'P1004', '粮油', 'S5001', '1', '2016-08-23 14:50:32', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('18', 'P1004', '饮料', 'S5002', '1', '2016-08-23 14:51:10', null, null, null);
+INSERT INTO `tl_prod_type` VALUES ('19', 'P1004', '酒类', 'S5003', '1', '2016-08-23 14:52:08', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_purchase_cfg
