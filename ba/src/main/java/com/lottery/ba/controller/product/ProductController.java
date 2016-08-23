@@ -135,7 +135,7 @@ public class ProductController {
 		prod.setCreateAt(new Date());
 		this.productService.saveProductF(prod);
 		Map<String, Object> map = this.productService.getNewProductF();
-		this.esService.createIndexResponse("product", "goods", JSONObject.toJSONString(map));
+		this.esService.createIndexResponse("prod", "product", JSONObject.toJSONString(map));
 		return ClientMessage.success();
 	}
 }

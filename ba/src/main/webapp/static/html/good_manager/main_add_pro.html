@@ -13,10 +13,47 @@
 			<td><input class="easyui-textbox" type="text" id="inProName" name="productName" data-options="required:true"></input></td>
 			<td>商品价格：</td>
 			<td><input class="easyui-textbox" type="text" id="inProPrice" name="productPrice" data-options="required:true,min:0,precision:2"></input></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>是否显示：</td>
+			<td>
+				<select id="selIsShow" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+					<option value="0">否</option>
+					<option value="1">是</option>
+				</select>
+			</td>
+			<td>是否最新：</td>
+			<td>
+				<select id="selIsNew" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+					<option value="0">否</option>
+					<option value="1">是</option>
+				</select>
+			</td>
+			<td>是否热门：</td>
+			<td>
+				<select id="selIsHot" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+					<option value="0">否</option>
+					<option value="1">是</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>父类名称：</td>
+			<td>
+				<input type="hidden" id="inCategory">
+				<select id="selCategory" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 150px;"></select>
+			</td>
+			<td>子类名称：</td>
+			<td>
+				<input type="hidden" id="inType">
+				<select id="selType" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 150px;"></select>
+			</td>
 		</tr>
 		<tr>
 			<td>商品描述：</td>
-			<td colspan="3"><input style="width: 431px;" class="easyui-textbox" type="text" id="inProDesc" name="productDesc" data-options="required:true"></input></td>
+			<td colspan="5"><input style="width: 431px;" class="easyui-textbox" type="text" id="inProDesc" name="productDesc" data-options="required:true"></input></td>
 		</tr>
 		<tr>
 			<td>商品封面：</td>
@@ -111,6 +148,37 @@
 		$("#addProFrom").form('clear');
 	});
 	
+	$.get("/category/all",function(json){
+		$("#selCategory").combobox({
+			data:json.data,
+			editable:false,
+			valueField:"categoryCode",
+			textField:"categoryName",
+			onLoadSuccess:function(){
+				var data = $(this).combobox('getData');
+	            if (data.length > 0) {
+	                $(this).combobox('select', data[0].categoryCode);
+	                $("#inCategory").val($(this).combobox("getValue"));
+	            }
+			},
+			onSelect:function(){
+				console.log($("#selCategory").combobox("getValue"));
+				$("#inCategory").val($(this).combobox("getValue"));
+				$("#selType").combobox({
+					url:"/category/type/all?categoryCode="+$("#selCategory").combobox("getValue"),
+					valueField:"typeCode",
+					textField:"typeName",
+					onLoadSuccess:function(){
+						var data = $(this).combobox('getData');
+			            if (data.length > 0) {
+			                $(this).combobox('select', data[0].typeCode);
+			                $("#inType").val($("#selType").combobox("getValue"));
+			            }
+					}
+				}).combobox("clear");
+			}
+		});
+	})
 </script>
 </body>
 </html>

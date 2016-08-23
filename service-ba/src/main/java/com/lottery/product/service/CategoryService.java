@@ -14,4 +14,8 @@ public interface CategoryService {
 	void saveCategory(String categoryName, String categoryCode);
 
 	void saveProdType(String categoryCode, String typeName, String typeCode);
+
+	void updateCategory(Category category);
+
+	void updateProdType(ProdType prodType);
 }

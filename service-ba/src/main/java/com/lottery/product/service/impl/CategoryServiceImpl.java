@@ -37,4 +37,16 @@ public class CategoryServiceImpl implements CategoryService {
 		return this.categoryDao.getProdTypeByCategoryCode(categoryCode);
 	}
 
+	@Override
+	public void updateCategory(Category category) {
+		category.setUpdateAt(new Date());
+		this.categoryDao.updateCategory(category);
+	}
+
+	@Override
+	public void updateProdType(ProdType prodType) {
+		prodType.setUpdateAt(new Date());
+		this.categoryDao.updateProdType(prodType);
+	}
+
 }

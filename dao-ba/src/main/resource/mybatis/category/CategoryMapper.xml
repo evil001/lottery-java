@@ -112,11 +112,84 @@
 	
 	<!-- 查询父分类 -->
 	<select id="getCategory" resultType="Category">
-		SELECT c.category_name categoryName,c.category_code categoryCode FROM tl_category c WHERE c.state = 1
+		SELECT c.id,c.category_name categoryName,c.category_code categoryCode,c.create_at createAt,c.create_user createUser FROM tl_category c WHERE c.state = 1
 	</select>
 	
 	<!-- 根据父类查询子类 -->
 	<select id="getProdTypeByCategoryCode" parameterType="String" resultType="ProdType">
-		SELECT pt.category_code categoryCode,pt.type_name typeName,pt.type_code typeCode FROM tl_prod_type pt WHERE pt.state = 1 AND pt.category_code = #{categoryCode}
+		SELECT pt.id,pt.category_code categoryCode,pt.type_name typeName,pt.type_code typeCode,pt.create_at createAt,pt.create_user createUser FROM tl_prod_type pt
+		<where>
+			<if test="categoryCode != null and categoryCode !=''">
+				category_code = #{categoryCode}
+			</if>
+			<if test="state != null">
+				AND pt.state = 1
+			</if>
+		</where>
 	</select>
+	
+	<!-- 更新父类型 -->
+	<update id="updateCategory" parameterType="Category">
+		update tl_category
+		<set>
+			<if test="categoryName != null and categoryName != ''">
+				category_name = #{categoryName},
+			</if>
+			<if test="categoryCode != null and categoryCode != ''">
+				category_code = #{categoryCode},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="createAt != null">
+				create_at = #{createAt},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateAt != null">
+				update_at = #{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				update_user = #{updateUser},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<!-- 更新子类型 -->
+	<update id="updateProdType" parameterType="ProdType">
+		update tl_prod_type
+		<set>
+			<if test="categoryCode != null and categoryCode !=''">
+				category_code = #{categoryCode},
+			</if>
+			<if test="typeName != null and typeName != ''">
+				type_name = #{typeName},
+			</if>
+			<if test="typeCode != null and typeCode !=''">
+				type_code = #{typeCode},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="createAt != null">
+				create_at = #{createAt},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateAt != null">
+				update_at = #{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				update_user = #{updateUser},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
 </mapper>

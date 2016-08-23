@@ -17,4 +17,8 @@ public interface CategoryDao {
 	List<ProdType> getProdTypeByCategoryCode(String categoryCode);
 
 	void saveProdType(ProdType type);
+
+	void updateCategory(Category category);
+
+	void updateProdType(ProdType type);
 }

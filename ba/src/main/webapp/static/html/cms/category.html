@@ -50,12 +50,18 @@
 		</form>
 	</div>
 	<div region="south" split="false" style="height: 300px;">
-		<table id="tbProSett"></table>
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'west',split:false" style="width: 50%">
+				<table id="tbCateSett"></table>
+			</div>
+			<div data-options="region:'east',split:false" style="width: 50%">
+				<table id="tbTypeSett"></table>
+			</div>
+		</div>
 	</div>
 </div>
 <script type="text/javascript">
 $(function(){
-	var category,datagrid;
 	$("#fAddForm").form({
 		url:"/category/save",
 		onSubmit:function(){
@@ -109,21 +115,14 @@ $(function(){
 			}
 		});
 	});
-	$.ajax({
-		type:"GET",
-		url:"/category/all",
-		async:false,
-		success:function(data){
-			category = data;
-		}
-	});
-	datagrid = $("#tbProSett").datagrid({
+	
+	$("#tbCateSett").datagrid({
 		fit:true,
-		url:'/prod/query',
+		url:'/category/list',
 		align:"center",
 		beginEdit:5,
-		sortName:'createAt',
-		sortOrder:'desc',
+		sortName:'create_at',
+		sortOrder:'asc',
 		pageNumner:1,
 		pageSize:10,
 		pagination:true,
@@ -135,57 +134,24 @@ $(function(){
 		singleSelect:true,
 		columns:[[
 		          {field:'id',title:'主键',width:100,align:"center"},
-		          {field:'productName',title:'商品名称',width:150},
-		          {field:'productPrice',title:'商品价格',width:150},
-		          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
-		        	  return "<img src="+row.productImg+">";
-		          }},
+		          {field:'categoryName',title:'分类名称',width:150,editor:"text"},
+		          {field:'categoryCode',title:'分类编号',width:150,editor:"text"},
 		          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
-		          {field:"categoryCode",title:"父类",width:100,align:"center",editor:{type:"combobox",options:{data:category.data,valueField:"categoryCode",textField:"categoryName",editable:false,onSelect:function(data){
-		        	  var row = datagrid.datagrid("getSelections");  
-                      var rowIndex = datagrid.datagrid('getRowIndex', row[0]);
-                      var ed = datagrid.datagrid('getEditors',rowIndex)[1].target;
-		        	  ed.combobox("clear");
-		        	  ed.combobox("reload","/category/type/all?categoryCode="+data.categoryCode);
-		          }}}},
-		          {field:"typeCode",title:"子类",width:100,align:"center",editor:{type:"combobox",options:{valueField:"typeCode",textField:"typeName",editable:false,onLoadSuccess:function(){
-		        	  var data = $(this).combobox('getData');
-		              if (data.length > 0) {
-		                  $(this).combobox('select', data[0].typeCode);
-		              }
-		          }}}},
-		          {field:"isHot",title:"热门推荐",width:100,align:"center",editor:{type:"combobox",options:{
-		        	  editable:false,
-		        	  data:[
-		        	        {"isHotTitle":"否","isHot":0},
-		        	        {"isHotTitle":"是","isHot":1}
-		        	        ],
-		        	  textField:"isHotTitle",
-		        	  valueField:"isHot"
-		          }}},
-		          {field:"isNew",title:"新品上架",width:100,align:"center",editor:{type:"combobox",options:{
-		        	  editable:false,
-		        	  data:[
-		        	        {"isNewTitle":"否","isNew":0},
-		        	        {"isNewTitle":"是","isNew":1}
-		        	        ],
-		        	  textField:"isNewTitle",
-		        	  valueField:"isNew"
-		          }}},
+		          {field:'createUser',title:"创建人",width:150,align:"center"},
 		          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
 		        	  if (row.editing){
-	                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
-	                      var c = '<a href="javascript:void(0)" onclick="cancelrow(this)">取消</a>';
+	                      var s = '<a href="javascript:void(0)" onclick="cateSaveRow(this)">保存</a> ';
+	                      var c = '<a href="javascript:void(0)" onclick="cateCancelRow(this)">取消</a>';
 	                      return s+c;
 	                  } else {
-	                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
-	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
+	                      var e = '<a href="javascript:void(0)" onclick="cateEditRow(this)">编辑</a> ';
+	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="cateDelRow(this)">删除</a>';
 	                      return e+d;
 	                  }
 		          }}
 		        ]],
 		onClickRow:function(index,field){
- 			field.editing = false;
+				field.editing = false;
 	        $(this).datagrid('refreshRow', index);
 		},
 		onDblClickRow:function(index,field){
@@ -203,35 +169,160 @@ $(function(){
 	        $(this).datagrid('refreshRow', index);
 	    },
 	    onEndEdit:function(index,row){
-	    	var pro = {
-	    		productId : row.id,
-	    		categoryCode : row.categoryCode,
-	    		typeCode : row.typeCode,
-	    		isHot : row.isHot,
-	    		isNew : row.isNew
-	    	}
-	    	console.log(row)
-	    	console.log(pro)
-	    	$.get("/prod/f/save",pro,function(data){
-	    		if(data.responseCode == 10000)
-	    			$.messager.confirm('系统提示','添加成功');
-	    	});
+	    	var ed = $(this).datagrid('getEditor', {
+	            index: index,
+	            field: 'categoryCode',
+	            field: 'typeCode',
+	            field: 'typeName'
+	        });
+	    	var category = {
+        		id:row.id,
+        		categoryName:row.categoryName,
+        		categoryCode:row.categoryCode,
+        		state:1
+        	}
+	    	$.get("/category/update",category,function(data){
+				if(data.responseCode == 10000){
+					$.messager.show({
+						title:"系统提示",
+						msg:"修改成功",
+						showType:"show"
+					})
+				}
+			});
 	    }
 	});
 	
+	$("#tbTypeSett").datagrid({
+		fit:true,
+		url:'/category/type/list',
+		align:"center",
+		beginEdit:5,
+		sortName:'create_at',
+		sortOrder:'asc',
+		pageNumner:1,
+		pageSize:10,
+		pagination:true,
+		rownnumbers:true,
+		method:"GET",
+		nowrap:true,
+		numbers:true,
+		fitColumns:true,
+		singleSelect:true,
+		columns:[[
+		          {field:'id',title:'主键',width:100,align:"center"},
+		          {field:'categoryCode',title:'父类编号',width:150,editor:"text"},
+		          {field:'typeCode',title:'子类编号',width:150,editor:"text"},
+		          {field:'typeName',title:'子类名称',width:150,editor:"text"},
+		          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
+		          {field:'createUser',title:"创建人",width:150,align:"center"},
+		          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
+		        	  if (row.editing){
+	                      var s = '<a href="javascript:void(0)" onclick="typeSaveRow(this)">保存</a> ';
+	                      var c = '<a href="javascript:void(0)" onclick="typeCancelRow(this)">取消</a>';
+	                      return s+c;
+	                  } else {
+	                      var e = '<a href="javascript:void(0)" onclick="typeEditRow(this)">编辑</a> ';
+	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="typeDelRow(this)">删除</a>';
+	                      return e+d;
+	                  }
+		          }}
+		        ]],
+		onClickRow:function(index,field){
+			field.editing = false;
+	        $(this).datagrid('refreshRow', index);
+		},
+		onDblClickRow:function(index,field){
+		},
+		onCancelEdit:function(index,row){
+			row.editing = false;
+			$(this).datagrid('refreshRow', index);
+		},
+		onBeforeEdit:function(index,row){
+	        row.editing = true;
+	        $(this).datagrid('refreshRow', index);
+	    },
+	    onAfterEdit:function(index,row){
+	        row.editing = true;
+	        $(this).datagrid('refreshRow', index);
+	    },
+	    onEndEdit:function(index,row){
+	    	var ed = $(this).datagrid('getEditor', {
+	            index: index,
+	            field: 'categoryCode',
+	            field: 'typeCode',
+	            field: 'typeName'
+	        });
+	    	var prodType = {
+        		id:row.id,
+        		categoryCode:row.categoryCode,
+        		typeCode:row.typeCode,
+        		typeName:row.typeName,
+        		state:1
+        	}
+	    	$.get("/category/type/update",prodType,function(data){
+				if(data.responseCode == 10000){
+					$.messager.show({
+						title:"系统提示",
+						msg:"修改成功",
+						showType:"show"
+					})
+				}
+			});
+	    }
+	});
 });
 
-function saverow(target){
-	$('#tbProSett').datagrid('endEdit', getRowIndex(target));
+function cateSaveRow(target){
+	$("#tbCateSett").datagrid("endEdit",getRowIndex(target))
 }
 
-function editrow(target){
-    $('#tbProSett').datagrid('beginEdit', getRowIndex(target));
+function typeSaveRow(target){
+	$("#tbTypeSett").datagrid("endEdit",getRowIndex(target));
 }
 
-function cancelrow(target){
-    $('#tbProSett').datagrid('cancelEdit', getRowIndex(target));
+function cateCancelRow(target){
+	$("#tbCateSett").datagrid("cancelEdit",getRowIndex(target));
 }
+
+function typeCancelRow(target){
+	$("#tbTypeSett").datagrid("cancelEdit",getRowIndex(target));
+}
+
+function cateEditRow(target){
+	$("#tbCateSett").datagrid("beginEdit",getRowIndex(target));
+}
+
+function typeEditRow(target){
+	$("#tbTypeSett").datagrid("beginEdit",getRowIndex(target));
+}
+
+function cateDelRow(target){
+	$.messager.confirm('系统提示','确定要删除嘛?',function(r){
+		if (r){
+			$('#tbCateSett').datagrid('deleteRow', getRowIndex(target));
+			var category = {
+            	id:$(target).attr("data"),
+            	state:0
+	        }
+			$.get("/category/update",category);
+		}
+	});
+}
+
+function typeDelRow(target){
+	$.messager.confirm('系统提示','确定要删除嘛?',function(r){
+		if (r){
+			$('#tbTypeSett').datagrid('deleteRow', getRowIndex(target));
+			var prodType = {
+            	id:$(target).attr("data"),
+            	state:0
+	        }
+			$.get("/category/type/update",prodType);
+		}
+	});
+}
+
 </script>
 </body>
 </html>

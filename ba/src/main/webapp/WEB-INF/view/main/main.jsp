@@ -32,6 +32,10 @@
 				<a href="#" id="aProImgList" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">列表管理</a>
 				<a href="#" id="aQueryPro" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">商品查询</a>
 			</div>
+			<div title="云购管理" style="text-align: -webkit-center;">
+				<a href="#" id="aygCfg" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">云购配置</a>
+				<a href="#" id="aygNum" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">云购记录</a>
+			</div>
 			<div title="用户管理">
 			
 			</div>
