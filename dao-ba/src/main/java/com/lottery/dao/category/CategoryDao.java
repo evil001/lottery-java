@@ -2,6 +2,7 @@ package com.lottery.dao.category;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.lottery.domain.category.Category;
@@ -14,7 +15,7 @@ public interface CategoryDao {
 
 	List<Category> getCategory();
 
-	List<ProdType> getProdTypeByCategoryCode(String categoryCode);
+	List<ProdType> getProdTypeByCategoryCode(@Param("categoryCode") String categoryCode);
 
 	void saveProdType(ProdType type);
 

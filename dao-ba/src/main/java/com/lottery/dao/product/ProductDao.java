@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.lottery.domain.prod.Product;
-import com.lottery.domain.prod.ProductF;
 
 @Repository
 public interface ProductDao {
@@ -48,18 +47,8 @@ public interface ProductDao {
 	 * @param state
 	 * @return
 	 */
-	List<Product> getProduct(@Param("productName") String productName, @Param("createAt") String createAt,
-			@Param("state") int state);
+	List<Product> getProduct(@Param("productName") String productName, @Param("isNew") int isNew,
+			@Param("isHot") int isHot, @Param("categoryCode") String categoryCode, @Param("typeCode") String typeCode,
+			@Param("createAt") String createAt, @Param("state") int state);
 
-	/**
-	 * 添加商品到列表
-	 */
-	void saveProductF(ProductF productF);
-
-	/**
-	 * 获取最新商品
-	 * 
-	 * @return
-	 */
-	Map<String, Object> getNewProductF();
 }

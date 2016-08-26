@@ -19,21 +19,21 @@
 		<tr>
 			<td>是否显示：</td>
 			<td>
-				<select id="selIsShow" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+				<select id="selIsShow" name="isShow" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
 					<option value="0">否</option>
 					<option value="1">是</option>
 				</select>
 			</td>
 			<td>是否最新：</td>
 			<td>
-				<select id="selIsNew" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+				<select id="selIsNew" name="isNew" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
 					<option value="0">否</option>
 					<option value="1">是</option>
 				</select>
 			</td>
 			<td>是否热门：</td>
 			<td>
-				<select id="selIsHot" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+				<select id="selIsHot" name="isHot" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
 					<option value="0">否</option>
 					<option value="1">是</option>
 				</select>
@@ -42,12 +42,12 @@
 		<tr>
 			<td>父类名称：</td>
 			<td>
-				<input type="hidden" id="inCategory">
+				<input type="hidden" id="inCategory" name="categoryCode">
 				<select id="selCategory" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 150px;"></select>
 			</td>
 			<td>子类名称：</td>
 			<td>
-				<input type="hidden" id="inType">
+				<input type="hidden" id="inType" name="typeCode">
 				<select id="selType" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 150px;"></select>
 			</td>
 		</tr>

@@ -119,11 +119,9 @@
 	<select id="getProdTypeByCategoryCode" parameterType="String" resultType="ProdType">
 		SELECT pt.id,pt.category_code categoryCode,pt.type_name typeName,pt.type_code typeCode,pt.create_at createAt,pt.create_user createUser FROM tl_prod_type pt
 		<where>
+			pt.state = 1
 			<if test="categoryCode != null and categoryCode !=''">
-				category_code = #{categoryCode}
-			</if>
-			<if test="state != null">
-				AND pt.state = 1
+				AND category_code = #{categoryCode}
 			</if>
 		</where>
 	</select>

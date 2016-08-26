@@ -22,4 +22,12 @@ $(function(){
 	$("#aBanner").click(function(){
 		addTab('divTabs','banner管理','static/html/cms/banner_manager.html')
 	});
+	
+	$("#aygCfg").click(function(){
+		addTab('divTabs','云购管理','static/html/yg/yg_cfg.html')
+	});
+	
+	$("#aESSync").click(function(){
+		addTab('divTabs','同步搜索','static/html/yg/async_es.html')
+	});
 });

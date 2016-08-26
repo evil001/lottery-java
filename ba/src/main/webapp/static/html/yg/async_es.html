@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body class="easyui-layout" data-options="split:false,fit:true">
+<div style="height: 100%;">
+	<table id="tbESSync"></table>
+</div>
+<script type="text/javascript">
+$("#tbESSync").datagrid({
+	url:'/purchase/es/all',
+	fit:true,
+	align:"center",
+	beginEdit:1,
+	sortName:'id',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+				{field:'id',title:"主键",width:100,align:"center"},
+				{field:"periods",title:"期数",width:100,align:"center"},
+				{field:"productName",title:"商品名称",width:150,align:"center"},
+				{field:"productImg",title:"商品封面",width:150,align:"center",formatter:function(value,row,index){
+					return "<img src="+row.productImg+"-80x80>";
+				}},
+				{field:"productPrice",title:"商品价格",width:150,align:"center"},
+				{field:"categoryCode",title:"父类编号",width:100,align:"center"},
+				{field:"typeCode",title:"子类编号",width:100,align:"center"},
+				{field:"totalPerson",title:"总人次",width:100,align:"center"},
+				{field:"participate",title:"参与人次",width:100,align:"center"},
+				{field:"residuePerson",title:"剩余人次",width:100,align:"center"},
+				{field:"isShow",title:"是否显示",width:100,align:"center"},
+				{field:"isNew",title:"是否最新",width:100,align:"center"},
+				{field:"isHot",title:"是否热门",width:100,align:"center"},
+				{field:"state",title:"状态",width:100,align:"center"},
+				{field:"createAt",title:"创建时间",width:100,align:"center",formatter:formatDateYmdHms},
+				{field:"oper",title:"操作",width:100,align:"center",formatter:function(value,row,index){
+		        	  if (row.editing){
+	                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
+	                      var c = '<a href="javascript:void(0)" onclick="cancelrow(this)">取消</a>';
+	                      return s+c;
+	                  } else {
+	                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
+	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
+	                      return e+d;
+	                  }
+		        }
+				}]],
+	          toolbar:[{
+	      		text:"批量同步",iconCls:"icon-reload",handler:function(){
+	      			datagrid.datagrid("reload");
+	      		}
+		      	},'-',{
+		      		text:"增量同步",iconCls:"icon-reload",handler:function(){
+		      			
+		      			datagrid.datagrid("reload");
+		      		}
+		      	}],
+		      	onCancelEdit:function(index,row){
+		      		row.editing = false;
+		      		$(this).datagrid('refreshRow', index);
+			    },
+		      	onBeforeEdit:function(index,row){
+		             row.editing = true;
+		             $(this).datagrid('refreshRow', index);
+		        },
+		        onAfterEdit:function(index,row){
+		             row.editing = false;
+		             $(this).datagrid('refreshRow', index);
+		        },
+			    onEndEdit:function(index,row){
+			    	
+		        }
+});
+
+function editrow(target){
+    $('#tbESSync').datagrid('beginEdit', getRowIndex(target));
+}
+
+function deleterow(target){
+    $.messager.confirm('系统提示','确定要删除嘛?',function(r){
+        if (r){
+            $('#tbESSync').datagrid('deleteRow', getRowIndex(target));
+             var pro = {
+            	id:$(target).attr("data")
+            }
+            $.get("/prod/update",pro);
+        }
+    });
+}
+
+function saverow(target){
+    $('#tbESSync').datagrid('endEdit', getRowIndex(target));
+}
+
+function cancelrow(target){
+    $('#tbESSync').datagrid('cancelEdit', getRowIndex(target));
+}
+</script>
+</body>
+</html>

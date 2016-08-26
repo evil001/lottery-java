@@ -6,16 +6,194 @@
 </head>
 <body class="easyui-layout" data-options="split:false,fit:true">
 <div style="height: 20%">
-<table>
+<table style="padding: 20px;">
 	<tr>
 		<td>期数：</td>
-		<td><input type="easyui-textbox"></td>
-		<td></td>
+		<td style="padding-left: 20px;"><input id="inPeriods" type="text" class="easyui-textbox"></td>
+		<td style="padding-left: 5px;">总人次：</td>
+		<td style="padding-left: 20px;"><input id="inTotalPerson" type="text" class="easyui-textbox"></td>
+		<td style="padding-left: 5px;">标题：</td>		
+		<td style="padding-left: 20px;"><input id="inTitle" type="text" class="easyui-textbox"></td>
+		<td style="padding-left: 5px;">商品编号：</td>
+		<td style="padding-left: 20px;"><input id="inProductNum" type="text" class="easyui-textbox" data-options="disabled:true"></td>
+		<td style="padding-left: 20px;"><a id="aQuary" class="easyui-linkbutton">商品筛选</a></td>
+	</tr>
+	<tr>
+		<td>限购人次：</td>
+		<td style="padding-left: 20px;"><input id="inLimitPerson" type="text" class="easyui-textbox" value="0"></td>
+		<td style="padding-left: 20px;" colspan="6"><a id="aSave" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a></td>
 	</tr>
 </table>
 </div>
 <div style="height: 80%">
-
+<table id="tbPurchase"></table>
 </div>
+<div id="divProd" style="top: 30px;"></div>
+<script type="text/javascript">
+$("#tbPurchase").datagrid({
+	url:'/purchase/all',
+	fit:true,
+	align:"center",
+	beginEdit:1,
+	sortName:'create_at',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+	          {field:'id',title:"主键",width:100,align:"center"},
+	          {field:'periods',title:"期数",width:100,align:"center",editor:"text"},
+	          {field:'title',title:"标题",width:150,align:"center",editro:"text"},
+	          {field:'participate',title:"已参与人次",width:100,align:"center",editor:"text"},
+	          {field:'totalPerson',title:'总人次',width:100,align:"center",editor:"text"},
+	          {field:'residuePerson',title:'剩余人次',width:100,align:"center",editro:"text"},
+	          {field:"limitPerson",title:"限购人次",width:100,align:"center",editor:"text"},
+	          {field:'productName',title:'商品名称',width:150,align:"center"},
+	          {field:'productImg',title:'商品图片',width:150,align:"center",formatter:function(value,row,index){
+	        	  return "<img src="+row.productImg+"-80x80>";
+	          }},
+	          {field:'productPrice',title:"商品价格",width:150,align:"center"},
+	          {field:'createAt',title:"创建时间",width:150,align:"center",formatter:formatDateYmdHms},
+	          {field:'createUser',title:"创建人",width:150,align:"center"},
+	          {field:"oper",title:"操作",width:100,align:"center",formatter:function(value,row,index){
+	        	  if (row.editing){
+                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
+                      var c = '<a href="javascript:void(0)" onclick="cancelrow(this)">取消</a>';
+                      return s+c;
+                  } else {
+                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
+                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
+                      return e+d;
+                  }
+	          }}
+	          ]],
+        onCancelEdit:function(index,row){
+      		row.editing = false;
+      		$(this).datagrid('refreshRow', index);
+	    },
+      	onBeforeEdit:function(index,row){
+             row.editing = true;
+             $(this).datagrid('refreshRow', index);
+        },
+        onAfterEdit:function(index,row){
+             row.editing = false;
+             $(this).datagrid('refreshRow', index);
+        },
+	    onEndEdit:function(index,row){
+	    	var ed = $(this).datagrid('getEditor', {
+	            index: index,
+	            field: 'periods',
+	            field: 'title',
+	            field: 'participate',
+	            field: 'totalPerson',
+	            field: 'residuePerson',
+	            field: 'limitPerson'
+	        });
+        	var purchase = {
+        		id:row.id,
+        		periods:row.periods,
+        		title:row.title,
+        		participate:row.participate,
+        		totalPerson:row.totalPerson,
+        		residuePerson:row.residuePerson,
+        		limitPerson:row.limitPerson
+        	}
+        	console.log(purchase)
+        	$.get("/purchase/update",purchase,function(data){
+        		if(data.responseCode == 10000){
+        			$.messager.show({
+    					title:"系统提示",
+    					msg:"修改成功",
+    					showType:"show"
+    				});
+        			$('#tbPurchase').datagrid("reload");
+        		}
+        	});
+        }
+});
+
+function editrow(target){
+	$('#tbPurchase').datagrid('beginEdit', getRowIndex(target));
+}
+
+function deleterow(target){
+$.messager.confirm('系统提示','确定要删除嘛?',function(r){
+    if (r){
+        $('#tbPurchase').datagrid('deleteRow', getRowIndex(target));
+         var purchase = {
+        	id:$(target).attr("data"),
+        	state:0
+        }
+        $.get("/purchase/update",pro);
+    }
+});
+}
+
+function saverow(target){
+    $('#tbPurchase').datagrid('endEdit', getRowIndex(target));
+}
+
+function cancelrow(target){
+    $('#tbPurchase').datagrid('cancelEdit', getRowIndex(target));
+}
+
+$("#aQuary").click(function(){
+	$("#divProd").dialog({
+		title:"商品信息",
+		width:800,
+		height:600,
+		closed:true,
+		closed:true,
+		href:"static/html/yg/prod_query.html",
+		modal:true,
+		buttons:[{
+			text:"确定",
+			iconCls:"icon-ok",
+			handler:function(){
+				var row = $('#tbQueryProd').datagrid('getSelected');
+				if(row == null){
+					$.messager.alert('系统提示','请选择对应的商品');
+				}
+				$("#inProductNum").textbox("setValue",row.id);
+				$("#divProd").dialog("close");
+			}
+		},{
+			text:"取消",
+			iconCls:"icon-cancel",
+			handler:function(){
+				$("#divProd").dialog("close");
+			}
+		}]
+	});
+	
+	$("#divProd").dialog("open");
+});
+
+$("#aSave").click(function(){
+	var purchase = {
+		periods:$("#inPeriods").textbox("getValue"),
+		totalPerson:$("#inTotalPerson").textbox("getValue"),
+		title:$("#inTitle").textbox("getValue"),
+		limitPerson:$("#inLimitPerson").textbox("getValue"),
+		productId:$("#inProductNum").textbox("getValue")
+	}
+	$.get("/purchase/save",purchase,function(data){
+		if(data.responseCode == 10000){
+			$.messager.alert('系统提示','保存成功');
+			$("#inPeriods").textbox("reset");
+			$("#inTotalPerson").textbox("reset");
+			$("#inTitle").textbox("reset");
+			$("#inProductNum").textbox("reset");
+			$("#inLimitPerson").textbox("reset");
+			$("#tbPurchase").datagrid("reload");
+		}
+	});
+});
+</script>
 </body>
 </html>

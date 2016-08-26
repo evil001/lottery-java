@@ -1,10 +1,7 @@
 package com.lottery.product.service;
 
-import java.util.Map;
-
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
-import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
 import com.lottery.mutual.EasyUIMessage;
 
@@ -16,7 +13,8 @@ public interface ProductService {
 
 	void updateProduct(Product product);
 
-	public EasyUIMessage getProduct(String productName, String createAt, Integer state, ParamPage param);
+	public EasyUIMessage getProduct(String productName, int isNew, int isHot, String typeCode, String categoryCode,
+			String createAt, Integer state, ParamPage param);
 
 	public EasyUIMessage getProductImg(Long productId, int state, String startTime, String endTime, ParamPage param);
 
@@ -33,18 +31,4 @@ public interface ProductService {
 	 */
 	public EasyUIMessage getProductCollect(String productName, int state, String startTime, String endTime,
 			ParamPage param);
-
-	/**
-	 * 保存商品到列表
-	 * 
-	 * @param product
-	 */
-	public void saveProductF(ProductF product);
-
-	/**
-	 * 获取最新商品
-	 * 
-	 * @return
-	 */
-	Map<String, Object> getNewProductF();
 }

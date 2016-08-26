@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.purchase.PurchaseDao" >
+	
+	<!-- yg管理 -->
+	<select id="getPurchaseAll" resultType="Purchase">
+		SELECT
+		pc.id,
+		pc.periods,
+		pc.participate,
+		pc.limit_person limitPerson,
+		pc.title,
+		pc.residue_person residuePerson,
+		pc.create_at createAt,
+		pc.create_user createUser,
+		p.product_name productName,
+		pi.product_img productImg,
+		p.product_price productPrice
+	FROM
+		tl_purchase_cfg pc
+	LEFT JOIN tl_product p ON pc.product_id = p.id
+	LEFT JOIN tl_product_img pi on p.id = pi.id
+		<where>
+			pc.state = 1
+		</where>
+	</select>
+	
+	<!-- saveBanner -->
+	<insert id="savePurchase" parameterType="Purchase" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO tl_purchase_cfg
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="periods != null">
+				periods,
+			</if>
+			<if test="title != null and title != ''">
+				title,
+			</if>
+			<if test="totalPerson != null">
+				total_person,
+			</if>
+			<if test="participate != null">
+				participate,
+			</if>
+			<if test="limitPerson != null">
+				limit_person,
+			</if>
+			<if test="residuePerson != null">
+				residue_person,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="createAt != null">
+				create_at,
+			</if>
+			<if test="createUser != null and createUser !=''">
+				create_user,
+			</if>
+			<if test="updateAt != null">
+				update_at,
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="periods != null">
+				${periods},
+			</if>
+			<if test="title != null and title != ''">
+				#{title},
+			</if>
+			<if test="totalPerson != null">
+				#{totalPerson},
+			</if>
+			<if test="participate != null">
+				#{participate},
+			</if>
+			<if test="limitPerson != null">
+				#{limitPerson},
+			</if>
+			<if test="residuePerson != null">
+				#{residuePerson},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="state != null">
+				#{state},
+			</if>
+			<if test="createAt != null">
+				#{createAt},
+			</if>
+			<if test="createUser != null and createUser !=''">
+				#{createUser},
+			</if>
+			<if test="updateAt != null">
+				#{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				#{updateUser},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改banner管理 -->
+	<update id="updateBanner" parameterType="BannerInfo">
+		UPDATE tl_purchase_cfg
+		<set>
+			<if test="periods != null">
+				periods = #{periods},
+			</if>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="totalPerson != null">
+				total_person = #{totalPerson},
+			</if>
+			<if test="participate != null">
+				participate = #{participate},
+			</if>
+			<if test="limitPerson != null">
+				limit_person = #{limitPerson},
+			</if>
+			<if test="residuePerson != null">
+				residue_person = #{residuePerson},
+			</if>
+			<if test="productId != null">
+				product_id = #{productId},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="createAt !=null">
+				create_at = #{createAt},
+			</if>
+			<if test="createUser != null and createUser !=''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateAt != null">
+				update_at = #{updateAt},
+			</if>
+			<if test="updateUser != null and updateUser != ''">
+				update_user = #{updateUser},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<!-- 将最新的数据放入ES -->
+	<select id="getPurchaseInES" resultType="Map">
+		SELECT
+		pi.product_img productImg,
+		p.product_name productName,
+		p.product_price productPrice, 
+		p.is_hot isHot,
+		p.is_new isNew,
+		p.is_show isShow,
+		p.category_code categoryCode,
+		p.type_code typeCode,
+		pc.id id,
+		pc.periods,
+		pc.total_person totalPerson,
+		pc.participate,
+		pc.residue_person residuePerson,
+		pc.limit_person limitPerson,
+		pc.state,
+		pc.create_at createAt
+	FROM
+		tl_purchase_cfg pc
+	LEFT JOIN tl_product p ON pc.product_id = p.id LEFT JOIN tl_product_img pi on p.id = pi.id
+  WHERE pc.id = (SELECT MAX(id) FROM tl_purchase_cfg)
+	</select>
+</mapper>

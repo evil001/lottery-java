@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div style="height: 20%">
+<table style="padding: 20px;">
+	<tr>
+		<td>父类名称：</td>
+		<td>
+			<input type="hidden" id="inCategory">
+			<select id="selCategory" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 150px;"></select>
+		</td>
+		<td>子类名称：</td>
+		<td>
+			<input type="hidden" id="inType">
+			<select id="selType" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 150px;"></select>
+		</td>
+		<td>商品名称：</td>
+		<td><input type="text" class="easyui-textbox" id="inProductName"></td>
+	</tr>
+	<tr>
+		<td>是否最新：</td>
+		<td>
+			<select id="selIsNew" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+				<option value="0">否</option>
+				<option value="1">是</option>
+			</select>
+		</td>
+		<td>是否热门：</td>
+		<td>
+			<select id="selIsHot" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+				<option value="0">否</option>
+				<option value="1">是</option>
+			</select>
+		</td>
+		<td><a id="aSearch" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a></td>
+		<td></td>
+	</tr>
+</table>
+</div>
+<div style="height: 80%">
+	<table id="tbQueryProd"></table>
+</div>
+<script type="text/javascript">
+var datagrid;
+$.get("/category/all",function(json){
+	$("#selCategory").combobox({
+		data:json.data,
+		editable:false,
+		valueField:"categoryCode",
+		textField:"categoryName",
+		onLoadSuccess:function(){
+			var data = $(this).combobox('getData');
+            if (data.length > 0) {
+                $(this).combobox('select', data[0].categoryCode);
+                $("#inCategory").val($(this).combobox("getValue"));
+            }
+		},
+		onSelect:function(){
+			$("#inCategory").val($(this).combobox("getValue"));
+			$("#selType").combobox({
+				url:"/category/type/all?categoryCode="+$("#selCategory").combobox("getValue"),
+				valueField:"typeCode",
+				textField:"typeName",
+				onLoadSuccess:function(){
+					var data = $(this).combobox('getData');
+		            if (data.length > 0) {
+		                $(this).combobox('select', data[0].typeCode);
+		                $("#inType").val($("#selType").combobox("getValue"));
+		            }
+				}
+			}).combobox("clear");
+		}
+	});
+})
+
+$("#aSearch").click(function(){
+	$("#tbQueryProd").datagrid("load",{
+		productName:$("#inProductName").val(),
+		categoryCode:$("#selCategory").combobox("getValue"),
+		typeCode:$("#selType").combobox("getValue"),
+		isNew:$("#selIsNew option:selected").val(),
+		isHot:$("#selIsHot option:selected").val()
+	});
+});
+
+datagrid = $("#tbQueryProd").datagrid({
+	fit:true,
+	url:'/prod/query',
+	align:"center",
+	queryParams:{
+		productName:$("#inProductName").val(),
+		categoryCode:$("#selCategory option:selected").val(),
+		typeCode:$("#selType option:selected").val(),
+		isNew:$("#selIsNew option:selected").val(),
+		isHot:$("#selIsHot option:selected").val()
+	},
+	sortName:'create_at',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+	          {field:'id',title:'主键',width:100,align:"center"},
+	          {field:'productName',title:'商品名称',width:150,editor:"text"},
+	          {field:'productPrice',title:'商品价格',width:150,align:"center",editor:{type:"numberbox",options:{min:0,precision:2}}},
+	          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
+	        	  return "<img src="+row.productImg+"-80x80"+">";
+	          }},
+	          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms}
+	        ]],
+	    	onCancelEdit:function(index,row){
+	    		row.editing = false;
+	    		$(this).datagrid('refreshRow', index);
+	    	},
+	    	onBeforeEdit:function(index,row){
+	            row.editing = true;
+	            $(this).datagrid('refreshRow', index);
+	        },
+	        onAfterEdit:function(index,row){
+	            row.editing = false;
+	            $(this).datagrid('refreshRow', index);
+	        },
+	        onEndEdit:function(index,row){
+	        	
+	        }
+});
+</script>
+</body>
+</html>

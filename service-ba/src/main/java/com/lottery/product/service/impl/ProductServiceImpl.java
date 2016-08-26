@@ -18,7 +18,6 @@ import com.lottery.dao.product.img.ProductImgDao;
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
 import com.lottery.domain.prod.ProductDetail;
-import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
 import com.lottery.domain.prod.ProductImgCollect;
 import com.lottery.mutual.EasyUIMessage;
@@ -58,10 +57,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public EasyUIMessage getProduct(String productName, String createAt, Integer state, ParamPage param) {
+	public EasyUIMessage getProduct(String productName, int isNew, int isHot, String categoryCode, String typeCode,
+			String createAt, Integer state, ParamPage param) {
 		PageHelper.startPage(param.getPage(), param.getRows());
 		PageHelper.orderBy(param.getSort().concat(" ").concat(param.getOrder()));
-		List<Product> list = this.productDao.getProduct(productName, createAt, state);
+		List<Product> list = this.productDao.getProduct(productName, isNew, isHot, categoryCode, typeCode, createAt,
+				state);
 		PageInfo<Product> pageInfo = new PageInfo<Product>(list);
 		return EasyUIMessage.easyJson(pageInfo.getTotal(), list);
 	}
@@ -100,16 +101,6 @@ public class ProductServiceImpl implements ProductService {
 				endTime);
 		PageInfo<ProductImgCollect> pageInfo = new PageInfo<ProductImgCollect>(list);
 		return EasyUIMessage.easyJson(pageInfo.getTotal(), list);
-	}
-
-	@Override
-	public void saveProductF(ProductF product) {
-		this.productDao.saveProductF(product);
-	}
-
-	@Override
-	public Map<String, Object> getNewProductF() {
-		return this.productDao.getNewProductF();
 	}
 
 }

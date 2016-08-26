@@ -19,6 +19,16 @@ public class Product extends BaseDomain implements Serializable {
 
 	private String productImg;
 
+	private int isShow;
+
+	private int isNew;
+
+	private int isHot;
+
+	private String typeCode;
+
+	private String categoryCode;
+
 	public String getProductName() {
 		return productName;
 	}
@@ -49,6 +59,46 @@ public class Product extends BaseDomain implements Serializable {
 
 	public void setProductImg(String productImg) {
 		this.productImg = productImg;
+	}
+
+	public int getIsShow() {
+		return isShow;
+	}
+
+	public void setIsShow(int isShow) {
+		this.isShow = isShow;
+	}
+
+	public int getIsNew() {
+		return isNew;
+	}
+
+	public void setIsNew(int isNew) {
+		this.isNew = isNew;
+	}
+
+	public int getIsHot() {
+		return isHot;
+	}
+
+	public void setIsHot(int isHot) {
+		this.isHot = isHot;
+	}
+
+	public String getTypeCode() {
+		return typeCode;
+	}
+
+	public void setTypeCode(String typeCode) {
+		this.typeCode = typeCode;
+	}
+
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
 	}
 
 }

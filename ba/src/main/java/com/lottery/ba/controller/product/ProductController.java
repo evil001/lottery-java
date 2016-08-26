@@ -1,20 +1,14 @@
 package com.lottery.ba.controller.product;
 
-import java.util.Date;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lottery.domain.ParamPage;
 import com.lottery.domain.prod.Product;
-import com.lottery.domain.prod.ProductF;
 import com.lottery.domain.prod.ProductImg;
-import com.lottery.es.service.ESService;
 import com.lottery.mutual.ClientMessage;
 import com.lottery.mutual.EasyUIMessage;
 import com.lottery.product.service.ProductService;
@@ -24,9 +18,6 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-
-	@Autowired
-	private ESService esService;
 
 	/**
 	 * 保存产品信息
@@ -54,9 +45,12 @@ public class ProductController {
 	 */
 	@RequestMapping("/prod/query")
 	public EasyUIMessage queryProduct(@RequestParam(required = false) String productName,
+			@RequestParam(defaultValue = "1") int isNew, @RequestParam(defaultValue = "1") int isHot,
+			@RequestParam(required = false) String categoryCode, @RequestParam(required = false) String typeCode,
 			@RequestParam(required = false) String createAt,
 			@RequestParam(defaultValue = "1", required = false) int state, ParamPage param) {
-		return this.productService.getProduct(productName, createAt, state, param);
+		return this.productService.getProduct(productName, isNew, isHot, categoryCode, typeCode, createAt, state,
+				param);
 	}
 
 	/**
@@ -130,12 +124,4 @@ public class ProductController {
 		return this.productService.getProductCollect(productName, state, startTime, endTime, param);
 	}
 
-	@RequestMapping("/prod/f/save")
-	public ClientMessage saveProductF(ProductF prod) {
-		prod.setCreateAt(new Date());
-		this.productService.saveProductF(prod);
-		Map<String, Object> map = this.productService.getNewProductF();
-		this.esService.createIndexResponse("prod", "product", JSONObject.toJSONString(map));
-		return ClientMessage.success();
-	}
 }
