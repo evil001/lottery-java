@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-08-23 18:27:25
+Date: 2016-08-26 18:13:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -84,7 +84,7 @@ CREATE TABLE `tl_img_collection` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_img_collection
@@ -96,6 +96,14 @@ INSERT INTO `tl_img_collection` VALUES ('11', '5', null, 'http://7vih7a.com1.z0.
 INSERT INTO `tl_img_collection` VALUES ('12', '5', null, 'http://7vih7a.com1.z0.glb.clouddn.com/IMG_0215.JPG?imageView2/1/w/80/h/80/q/85', '1', '2016-07-26 15:21:15', null, null, null);
 INSERT INTO `tl_img_collection` VALUES ('13', '5', null, 'http://7vih7a.com1.z0.glb.clouddn.com/IMG_0217.JPG?imageView2/1/w/80/h/80/q/85', '1', '2016-07-26 15:21:15', null, null, null);
 INSERT INTO `tl_img_collection` VALUES ('14', '5', null, 'http://7vih7a.com1.z0.glb.clouddn.com/IMG_0218.JPG?imageView2/1/w/80/h/80/q/85', '1', '2016-07-26 15:21:15', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('15', '6', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142430728.jpg', '1', '2016-08-25 14:28:00', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('16', '6', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142449625.jpg', '1', '2016-08-25 14:28:00', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('17', '6', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142506208.jpg', '1', '2016-08-25 14:28:00', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('18', '6', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142523544.jpg', '1', '2016-08-25 14:28:00', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('19', '7', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142449625.jpg', '1', '2016-08-26 09:37:18', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('20', '7', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142506208.jpg', '1', '2016-08-26 09:37:18', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('21', '7', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142540444.jpg', '1', '2016-08-26 09:37:18', null, null, null);
+INSERT INTO `tl_img_collection` VALUES ('22', '7', null, 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142555673.jpg', '1', '2016-08-26 09:37:18', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_participate
@@ -140,12 +148,13 @@ CREATE TABLE `tl_product` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_product
 -- ----------------------------
-INSERT INTO `tl_product` VALUES ('5', '苹果（Apple）iPhone 6s 16G版 4G手机', '有些礼物，能瞬间抓住人心，唯一的不同，是处处都不同！（颜色随机发）', '6400', '1', null, null, null, null, null, '2016-07-26 15:21:11', null, '1', null, null);
+INSERT INTO `tl_product` VALUES ('6', '苹果（Apple）iPhone 6s 16G版 4G手机', '有些礼物，能瞬间抓住人心，唯一的不同，是处处都不同！（颜色随机发）', '4688', '1', '1', '1', 'S1000', 'P1000', null, '2016-08-25 14:27:59', null, '1', null, null);
+INSERT INTO `tl_product` VALUES ('7', '苹果（Apple）iPhone 6s Plus 16G版 4G手机', '5.5英寸Retina HD显示，指尖一按， 3D Touch就能让你实现更多精彩！（颜色随机发）', '5699', '1', '1', '1', 'S1000', 'P1000', null, '2016-08-26 09:37:18', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for tl_product_detail
@@ -182,12 +191,14 @@ CREATE TABLE `tl_product_img` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_product_img
 -- ----------------------------
 INSERT INTO `tl_product_img` VALUES ('5', '5', 'http://7vih7a.com1.z0.glb.clouddn.com/IMG_0204.JPG-80x80', '2016-07-26 15:21:14', '1', null, null, null);
+INSERT INTO `tl_product_img` VALUES ('6', '6', 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142414922.jpg', '2016-08-25 14:27:59', '1', null, null, null);
+INSERT INTO `tl_product_img` VALUES ('7', '7', 'http://7vih7a.com1.z0.glb.clouddn.com/20150910142523544.jpg', '2016-08-26 09:37:18', '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_prod_type
@@ -235,8 +246,10 @@ DROP TABLE IF EXISTS `tl_purchase_cfg`;
 CREATE TABLE `tl_purchase_cfg` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `periods` int(11) DEFAULT NULL COMMENT '期数',
+  `title` varchar(200) DEFAULT NULL,
   `total_person` int(11) DEFAULT NULL COMMENT '总人次',
   `participate` int(11) DEFAULT NULL COMMENT '已参与人数',
+  `limit_person` int(11) DEFAULT NULL COMMENT '限购人次',
   `residue_person` int(11) DEFAULT NULL COMMENT '剩余人次',
   `product_id` bigint(20) DEFAULT NULL COMMENT '期数对应的产品',
   `state` int(11) DEFAULT NULL,
@@ -245,11 +258,13 @@ CREATE TABLE `tl_purchase_cfg` (
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_purchase_cfg
 -- ----------------------------
+INSERT INTO `tl_purchase_cfg` VALUES ('2', '1', '苹果（Apple）iPhone 6s 16G版 4G手机', '4688', '0', '5', '0', '6', '1', '2016-08-25 17:01:24', null, null, null);
+INSERT INTO `tl_purchase_cfg` VALUES ('3', '2', '苹果（Apple）iPhone 6s Plus 16G版 4G手机', '5699', '0', '0', '0', '7', '1', '2016-08-26 11:00:03', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_user
