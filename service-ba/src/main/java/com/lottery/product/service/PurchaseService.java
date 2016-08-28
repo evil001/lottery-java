@@ -1,5 +1,6 @@
 package com.lottery.product.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.lottery.domain.ParamPage;
@@ -13,6 +14,8 @@ public interface PurchaseService {
 	void updatePurchase(Purchase purchase);
 
 	EasyUIMessage getPurchaseAll(ParamPage param);
+
+	List<Map<String, Object>> getSyncPurchaseData();
 
 	Map<String, Object> getPurchaseInES();
 }

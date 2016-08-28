@@ -2,7 +2,10 @@ package com.lottery.es.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -58,9 +61,9 @@ public class ESService {
 				Integer totalPerson = (Integer) hit.getSource().get("totalPerson");
 				Integer periods = (Integer) hit.getSource().get("periods");
 				Integer state = (Integer) hit.getSource().get("state");
-				Integer productPrice = (Integer) hit.getSource().get("productPrice");
+				Double productPrice = (Double) hit.getSource().get("productPrice");
 				Integer isHot = (Integer) hit.getSource().get("isHot");
-				// Long createAt = (Long) hit.getSource().get("createAt");
+				String createAt = (String) hit.getSource().get("createAt");
 				Medicine m = new Medicine();
 				m.setId(id);
 				m.setParticipate(participate);
@@ -75,9 +78,9 @@ public class ESService {
 				m.setTotalPerson(totalPerson);
 				m.setPeriods(periods);
 				m.setState(state);
-				m.setProductPrice(productPrice.doubleValue());
+				m.setProductPrice(productPrice);
 				m.setIsHot(isHot);
-				// m.setCreateAt(createAt);
+				m.setCreateAt(createAt);
 				list.add(m);
 			}
 		}
@@ -93,5 +96,32 @@ public class ESService {
 	 */
 	public void delIndexResponse(String indexName, String type, String id) {
 		this.client.prepareDelete(indexName, type, id).execute().actionGet();
+	}
+
+	/**
+	 * 删除所有索引库
+	 * 
+	 * @param indexName
+	 */
+	public void delAllIndexResponse(String indexName) {
+		this.client.admin().indices().prepareDelete(indexName).execute().actionGet();
+	}
+
+	public BulkResponse batchCreateIndex(String indexName, String type, List<Map<String, Object>> list) {
+		this.delAllIndexResponse(indexName);
+		BulkRequestBuilder bulkRequest = this.client.prepareBulk();
+		BulkResponse bulkResponse = null;
+		if (!list.isEmpty()) {
+			for (Map<String, Object> map : list) {
+				bulkResponse = bulkRequest
+						.add(this.client.prepareIndex(indexName, type, map.get("id").toString()).setSource(map))
+						.execute().actionGet();
+				System.out.println(bulkResponse.buildFailureMessage());
+				if (bulkResponse.hasFailures()) {
+					return bulkResponse;
+				}
+			}
+		}
+		return bulkResponse;
 	}
 }

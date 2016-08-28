@@ -1,6 +1,6 @@
 file:
     windows: D:/
-    linux  : /var/
+    linux  : /Users/karaxiaojun/Documents/workspace/lottery-java
 server:
     port: 8081
 spring:
@@ -8,7 +8,7 @@ spring:
         name: lottery
         url: jdbc:mysql://localhost:3306/lottery?characterEncoding=utf-8
         username: root
-        password: 52105210
+        password: 
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
         filters: stat

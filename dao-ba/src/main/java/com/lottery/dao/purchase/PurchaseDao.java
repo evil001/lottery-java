@@ -16,5 +16,7 @@ public interface PurchaseDao {
 
 	List<Purchase> getPurchaseAll();
 
+	List<Map<String, Object>> getSyncPurchaseData();
+
 	Map<String, Object> getPurchaseInES();
 }

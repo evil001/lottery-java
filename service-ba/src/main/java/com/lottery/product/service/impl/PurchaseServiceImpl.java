@@ -48,4 +48,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return this.purchaseDao.getPurchaseInES();
 	}
 
+	@Override
+	public List<Map<String, Object>> getSyncPurchaseData() {
+		return this.purchaseDao.getSyncPurchaseData();
+	}
+
 }

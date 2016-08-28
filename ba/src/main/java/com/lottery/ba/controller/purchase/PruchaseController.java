@@ -3,6 +3,7 @@ package com.lottery.ba.controller.purchase;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,4 +68,17 @@ public class PruchaseController {
 		return ClientMessage.success();
 	}
 
+	/**
+	 * 全量同步
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/purchase/es/sync/all")
+	public ClientMessage syncEsAll() {
+		List<Map<String, Object>> list = this.purchaseService.getSyncPurchaseData();
+		BulkResponse bulkResponse = this.esService.batchCreateIndex(indexName, type, list);
+		if (bulkResponse == null || bulkResponse.hasFailures())
+			return ClientMessage.faild(null, -1);
+		return ClientMessage.success();
+	}
 }

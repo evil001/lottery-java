@@ -4,22 +4,15 @@
 	
 	<!-- yg管理 -->
 	<select id="getPurchaseAll" resultType="Purchase">
-		SELECT
-		pc.id,
-		pc.periods,
-		pc.participate,
-		pc.limit_person limitPerson,
-		pc.title,
-		pc.residue_person residuePerson,
-		pc.create_at createAt,
-		pc.create_user createUser,
-		p.product_name productName,
-		pi.product_img productImg,
-		p.product_price productPrice
-	FROM
-		tl_purchase_cfg pc
-	LEFT JOIN tl_product p ON pc.product_id = p.id
-	LEFT JOIN tl_product_img pi on p.id = pi.id
+		<include refid="COMMON_QUERY_PROD_SQL"/>
+		<where>
+			pc.state = 1
+		</where>
+	</select>
+	
+	<!-- 获取需要同步的ES数据 -->
+	<select id="getSyncPurchaseData" resultType="Map">
+		<include refid="COMMON_QUERY_PROD_SQL"/>
 		<where>
 			pc.state = 1
 		</where>
@@ -154,6 +147,11 @@
 	
 	<!-- 将最新的数据放入ES -->
 	<select id="getPurchaseInES" resultType="Map">
+		<include refid="COMMON_QUERY_PROD_SQL"/>
+  WHERE pc.id = (SELECT MAX(id) FROM tl_purchase_cfg)
+	</select>
+	
+	<sql id="COMMON_QUERY_PROD_SQL">
 		SELECT
 		pi.product_img productImg,
 		p.product_name productName,
@@ -174,6 +172,5 @@
 	FROM
 		tl_purchase_cfg pc
 	LEFT JOIN tl_product p ON pc.product_id = p.id LEFT JOIN tl_product_img pi on p.id = pi.id
-  WHERE pc.id = (SELECT MAX(id) FROM tl_purchase_cfg)
-	</select>
+	</sql>
 </mapper>

@@ -34,14 +34,14 @@ public class Medicine {
 
 	private int isHot;
 
-	private Long createAt;
+	private String createAt;
 
 	public Medicine() {
 	}
 
 	public Medicine(Integer id, Long total, Integer participate, Integer limitPerson, String productImg, int isNew,
 			String categoryCode, int residuePerson, String productName, Integer isShow, String typeCode,
-			int totalPerson, int periods, int state, Double productPrice, int isHot, Long createAt) {
+			int totalPerson, int periods, int state, Double productPrice, int isHot, String createAt) {
 		this.id = id;
 		this.total = total;
 		this.participate = participate;
@@ -189,11 +189,11 @@ public class Medicine {
 		this.isHot = isHot;
 	}
 
-	public Long getCreateAt() {
+	public String getCreateAt() {
 		return createAt;
 	}
 
-	public void setCreateAt(Long createAt) {
+	public void setCreateAt(String createAt) {
 		this.createAt = createAt;
 	}
 }

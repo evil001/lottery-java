@@ -56,7 +56,12 @@ $("#tbESSync").datagrid({
 				}]],
 	          toolbar:[{
 	      		text:"批量同步",iconCls:"icon-reload",handler:function(){
-	      			datagrid.datagrid("reload");
+	      			$.get("/purchase/es/sync/all",function(data){
+	      				if(data.responseCode == 10005){
+	      					$.messager.alert("系统提示","同步成功");
+	      				}
+	      			});
+	      			$("#tbESSync").datagrid("reload");
 	      		}
 		      	},'-',{
 		      		text:"增量同步",iconCls:"icon-reload",handler:function(){

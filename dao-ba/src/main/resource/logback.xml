@@ -9,7 +9,7 @@
 
     <appender name="rolling"
               class="ch.qos.logback.core.FileAppender">
-        <file>/app.log</file>
+        <file>/Users/karaxiaojun/Documents/workspace/lottery-java/app.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%logger.%M:%L] |%msg%n</pattern>
         </encoder>
