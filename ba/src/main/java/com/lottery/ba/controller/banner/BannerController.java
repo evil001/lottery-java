@@ -22,7 +22,7 @@ public class BannerController {
 	}
 
 	@RequestMapping("/cms/banner/save")
-	public ClientMessage saveBanner(BannerInfo banner) {
+	public ClientMessage saveBanner(BannerInfo banner, String startTime, String endTime) {
 		this.bannerService.saveBanner(banner);
 		return ClientMessage.success();
 	}

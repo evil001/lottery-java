@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+</head>
+<body class="easyui-layout" data-options="split:false,fit:true">
+<table cellspacing="10">
+<tr>
+	<td>email:</td>
+	<td><input class="easyui-textbox" type="text" id="inEmail" name="email" /></td>
+	<td style="width: 55px;">手机号:</td>
+	<td><input class="easyui-textbox" type="text" id="inMobilePhone" name="mobilePhone" /></td>
+	<td>性别:</td>
+	<td>
+		<select id="selGender" name="gender" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
+			<option value="0">男</option>
+			<option value="1">女</option>
+		</select>
+	</td>
+	<td style="width: 55px;">用户名称:</td>
+	<td><input class="easyui-textbox" type="text" id="inNickName" name="nickName" ></input></td>
+	<td style="width: 60px;">出生年月：</td>
+	<td>
+		<input id="inBirthY" class="easyui-datebox" style="width: 100px;">
+	</td>
+</tr>
+<tr>
+	<td>省份</td>
+	<td>
+		<select id="selProvince" class=""></select>
+	</td>
+	<td>市</td>
+	<td>
+		<select id="selCity" class=""></select>
+	</td>
+	<td>区</td>
+	<td>
+		<select id="selDistrict" class=""></select>
+	</td>
+	<td style="width: 67px;">详细地址：</td>
+	<td><input type="text" class="easyui-textbox" id="inAddress"></td>
+	<td>qq:</td>
+	<td><input type="text" class="easyui-textbox" id="inQq"></td>
+</tr>
+</table>
+<script type="text/javascript">
+$.get("",function(json){
+	
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.province.ProvinceDao">
+	
+	<!-- 获取所有省份 -->
+	<select id="getAllProvince" resultType="Province">
+		SELECT p.id,p.province_name provinceName,p.state,p.create_at createAt FROM tl_province p WHERE p.state = 1
+	</select>
+	
+	<!-- 获取所有城市 -->
+	<select id="getAllCity" resultType="City">
+		SELECT c.id,c.city_name cityName,c.zipcode zipcode,c.province_id provinceId,c.create_at createAt FROM tl_city c WHERE c.state = 1
+	</select>
+	
+	<!-- 获取所有区县 -->
+	<select id="getAllDistrict" resultType="District">
+		SELECT d.id,d.district_name districtName,d.city_id cityId,d.create_at createAt FROM tl_district d WHERE d.state = 1
+	</select>
+	
+</mapper>

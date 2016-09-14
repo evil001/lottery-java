@@ -32,7 +32,15 @@ public class ESService {
 		return response;
 	}
 
-	public List<Medicine> search(QueryBuilder queryBuilder, String indexName, String type, int page, int rows,
+	public Map<String, Object> search(QueryBuilder queryBuilder, String indexName, String typeName) {
+		SearchResponse searchResponse = this.client.prepareSearch(indexName).setTypes(typeName).setQuery(queryBuilder)
+				.execute().actionGet();
+		SearchHits hits = searchResponse.getHits();
+		SearchHit[] searchHists = hits.getHits();
+		return searchHists[0].getSource();
+	}
+
+	public List<Medicine> search(QueryBuilder queryBuilder, String indexName, String type, Integer page, Integer rows,
 			String sort, String order) {
 		SortOrder sortOrder = SortOrder.ASC;
 		if (order.equals("desc"))
@@ -42,7 +50,6 @@ public class ESService {
 		SearchResponse searchResponse = this.client.prepareSearch(indexName).setTypes(type).setQuery(queryBuilder)
 				.addSort(sort, sortOrder).setFrom(page).setSize(rows).execute().actionGet();
 		SearchHits hits = searchResponse.getHits();
-		System.out.println(hits.getTotalHits());
 		SearchHit[] searchHists = hits.getHits();
 		List<Medicine> list = new ArrayList<Medicine>();
 		if (searchHists.length > 0) {
@@ -78,7 +85,7 @@ public class ESService {
 				m.setTotalPerson(totalPerson);
 				m.setPeriods(periods);
 				m.setState(state);
-				m.setProductPrice(productPrice);
+				m.setProductPrice(productPrice.doubleValue());
 				m.setIsHot(isHot);
 				m.setCreateAt(createAt);
 				list.add(m);

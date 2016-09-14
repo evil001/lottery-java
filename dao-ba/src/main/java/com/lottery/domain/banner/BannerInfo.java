@@ -1,6 +1,7 @@
 package com.lottery.domain.banner;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.lottery.domain.base.BaseDomain;
 
@@ -13,11 +14,19 @@ public class BannerInfo extends BaseDomain implements Serializable {
 
 	private String title;
 
+	private String url;
+
 	private String imgUrl;
 
 	private Integer imgWidth;
 
 	private Integer imgHeight;
+
+	private Integer type;
+
+	private Date startTime;
+
+	private Date endTime;
 
 	public String getTitle() {
 		return title;
@@ -49,5 +58,37 @@ public class BannerInfo extends BaseDomain implements Serializable {
 
 	public void setImgHeight(Integer imgHeight) {
 		this.imgHeight = imgHeight;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 }

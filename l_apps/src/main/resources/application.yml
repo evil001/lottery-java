@@ -2,7 +2,7 @@ file:
     windows: D:/
     linux  : /Users/karaxiaojun/Documents/workspace/lottery-java
 server:
-    port: 8081
+    port: 8082
 spring:
     datasource:
         name: lottery
@@ -35,6 +35,9 @@ spring:
         encoding.charset: UTF-8
         encoding.enable: true
         encoding.force: true
+    redis:
+         host:127.0.0.1
+         port:6379
 elasticsearch:
     host:localhost
     port:9300

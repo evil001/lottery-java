@@ -4,7 +4,7 @@
 	
 	<!-- banner管理 -->
 	<select id="getBannerList" resultType="BannerInfo">
-		SELECT b.id,b.title,b.img_url imgUrl,b.img_width imgWidth,b.img_height imgHeight,b.create_at createAt FROM tl_banner b
+		SELECT b.id,b.title,b.img_url imgUrl,b.url,b.type,b.start_time startTime,b.end_time endTime,b.img_width imgWidth,b.img_height imgHeight,b.create_at createAt FROM tl_banner b
 		<where>
 			b.state = 1
 		</where>
@@ -17,6 +17,9 @@
 			<if test="title != null and title != ''">
 				title,
 			</if>
+			<if test="url != null and url != ''">
+				url,
+			</if>
 			<if test="imgUrl != null and imgUrl != ''">
 				img_url,
 			</if>
@@ -25,6 +28,15 @@
 			</if>
 			<if test="imgHeight != null">
 				img_height,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
 			</if>
 			<if test="state != null">
 				state,
@@ -46,6 +58,9 @@
 			<if test="title != null and title != ''">
 				#{title},
 			</if>
+			<if test="url != null and url != ''">
+				#{url},
+			</if>
 			<if test="imgUrl != null and imgUrl != ''">
 				#{imgUrl},
 			</if>
@@ -54,6 +69,15 @@
 			</if>
 			<if test="imgHeight != null">
 				#{imgHeight},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="startTime != null">
+				#{startTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
 			</if>
 			<if test="state != null">
 				#{state},
@@ -80,6 +104,9 @@
 			<if test="title != null and title != ''">
 				title = #{title},
 			</if>
+			<if test="url != null and url != ''">
+				url = #{url},
+			</if>
 			<if test="imgUrl != null and imgUrl !=''">
 				img_url = #{imgUrl},
 			</if>
@@ -88,6 +115,15 @@
 			</if>
 			<if test="imgHeight != null">
 				img_height = #{imgHeight},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime},
 			</if>
 			<if test="state != null">
 				state = #{state},

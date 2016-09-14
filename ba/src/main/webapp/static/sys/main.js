@@ -30,4 +30,8 @@ $(function(){
 	$("#aESSync").click(function(){
 		addTab('divTabs','同步搜索','static/html/yg/async_es.html')
 	});
+	
+	$("#aAddCustomer").click(function(){
+		addTab('divTabs','添加用户','static/html/user/user_manager.html')
+	});
 });

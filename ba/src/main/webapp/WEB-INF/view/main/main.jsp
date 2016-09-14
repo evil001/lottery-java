@@ -38,7 +38,8 @@
 				<a href="#" id="aQueryPro" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">商品查询</a>
 			</div>
 			<div title="用户管理">
-			
+				<a href="#" id="aAddCustomer" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">添加用户</a>
+				<a href="#" id="aQueryCustomer" class="easyui-linkbutton" data-options="plain:true" style="width: 103px;padding-left: 5px;">用户查询</a>
 			</div>
 		</div>
 	</div>

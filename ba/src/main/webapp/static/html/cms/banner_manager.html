@@ -11,6 +11,7 @@
 <div id="dialogUploadDiv" style="top: 30px;"></div>
 <input type="hidden" id="inBanner">
 <script type="text/javascript">
+var typeEnum = [{"value":"0","text":"微信"},{"value":"1","text":"WARP"},{"value":2,"text":"PC"}];
 var editRow = undefined;
 var datagrid;
 datagrid = $("#tbQueryBanner").datagrid({
@@ -37,6 +38,10 @@ datagrid = $("#tbQueryBanner").datagrid({
 	        	  return "<img src="+row.imgUrl+"-80x80>";
 	          	},editor:{type:"button",options:{title:"上传"}}
 	          },
+	          {field:"url",title:"链接",width:150,align:"center",editor:"text"},
+	          {field:"type",title:"类型",width:100,align:"center",editor:{type:"combobox",options:{data:typeEnum,valueField:"value",textField:"text"}}},
+	          {field:"startTime",title:"开始时间",width:150,align:"center",editor:"datetimebox",formatter:formatDateYmdHms},
+	          {field:"endTime",title:"结束时间",width:150,align:"center",editor:"datetimebox",formatter:formatDateYmdHms},
 	          {field:"imgWidth",title:"图片宽度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
 	          {field:"imgHeight",title:"图片高度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
 	          {field:"createAt",title:"创建时间",width:150,align:"center",formatter:formatDateYmdHms}
@@ -64,6 +69,8 @@ datagrid = $("#tbQueryBanner").datagrid({
 			console.log(rows);
 			rows[0].imgUrl = $("#inAllImg").val();
 			rows[0].createAt = new Date();
+			rows[0].startTime = new Date(rows[0].startTime);
+			rows[0].endTime = new Date(rows[0].endTime);
 			$.get("/cms/banner/save",rows[0]);
 			datagrid.datagrid("reload");
 		}
