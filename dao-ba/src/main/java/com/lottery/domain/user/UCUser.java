@@ -18,21 +18,25 @@ public class UCUser implements Serializable {
 
 	private String mobilePhone;
 
-	private int gender;
+	private Integer gender;
 
-	private int birthY;
+	private Integer birthY;
 
-	private int birthM;
+	private Integer birthM;
 
-	private int birthD;
+	private Integer birthD;
+
+	private String birth;
 
 	private Long constellationId;
 
-	private int province;
+	private String constellationName;
 
-	private int city;
+	private Integer province;
 
-	private int district;
+	private Integer city;
+
+	private Integer district;
 
 	private String address;
 
@@ -40,15 +44,15 @@ public class UCUser implements Serializable {
 
 	private String headImg;
 
-	private int isBindEmail;
+	private Integer isBindEmail;
 
-	private int isBindMobile;
+	private Integer isBindMobile;
 
-	private int incomeM;
+	private Integer incomeM;
 
 	private String remark;
 
-	private int state;
+	private Integer state;
 
 	private Date createAt;
 
@@ -57,6 +61,22 @@ public class UCUser implements Serializable {
 	private Date updateAt;
 
 	private String updateUser;
+
+	public String getConstellationName() {
+		return constellationName;
+	}
+
+	public void setConstellationName(String constellationName) {
+		this.constellationName = constellationName;
+	}
+
+	public String getBirth() {
+		return this.birthY + "-" + this.birthM + "-" + this.birthD;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = this.birthY + "-" + this.birthM + "-" + this.birthD;
+	}
 
 	public Long getId() {
 		return id;
@@ -90,35 +110,35 @@ public class UCUser implements Serializable {
 		this.mobilePhone = mobilePhone;
 	}
 
-	public int getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
-	public void setGender(int gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 
-	public int getBirthY() {
+	public Integer getBirthY() {
 		return birthY;
 	}
 
-	public void setBirthY(int birthY) {
+	public void setBirthY(Integer birthY) {
 		this.birthY = birthY;
 	}
 
-	public int getBirthM() {
+	public Integer getBirthM() {
 		return birthM;
 	}
 
-	public void setBirthM(int birthM) {
+	public void setBirthM(Integer birthM) {
 		this.birthM = birthM;
 	}
 
-	public int getBirthD() {
+	public Integer getBirthD() {
 		return birthD;
 	}
 
-	public void setBirthD(int birthD) {
+	public void setBirthD(Integer birthD) {
 		this.birthD = birthD;
 	}
 
@@ -130,27 +150,27 @@ public class UCUser implements Serializable {
 		this.constellationId = constellationId;
 	}
 
-	public int getProvince() {
+	public Integer getProvince() {
 		return province;
 	}
 
-	public void setProvince(int province) {
+	public void setProvince(Integer province) {
 		this.province = province;
 	}
 
-	public int getCity() {
+	public Integer getCity() {
 		return city;
 	}
 
-	public void setCity(int city) {
+	public void setCity(Integer city) {
 		this.city = city;
 	}
 
-	public int getDistrict() {
+	public Integer getDistrict() {
 		return district;
 	}
 
-	public void setDistrict(int district) {
+	public void setDistrict(Integer district) {
 		this.district = district;
 	}
 
@@ -178,27 +198,27 @@ public class UCUser implements Serializable {
 		this.headImg = headImg;
 	}
 
-	public int getIsBindEmail() {
+	public Integer getIsBindEmail() {
 		return isBindEmail;
 	}
 
-	public void setIsBindEmail(int isBindEmail) {
+	public void setIsBindEmail(Integer isBindEmail) {
 		this.isBindEmail = isBindEmail;
 	}
 
-	public int getIsBindMobile() {
+	public Integer getIsBindMobile() {
 		return isBindMobile;
 	}
 
-	public void setIsBindMobile(int isBindMobile) {
+	public void setIsBindMobile(Integer isBindMobile) {
 		this.isBindMobile = isBindMobile;
 	}
 
-	public int getIncomeM() {
+	public Integer getIncomeM() {
 		return incomeM;
 	}
 
-	public void setIncomeM(int incomeM) {
+	public void setIncomeM(Integer incomeM) {
 		this.incomeM = incomeM;
 	}
 
@@ -210,11 +230,11 @@ public class UCUser implements Serializable {
 		this.remark = remark;
 	}
 
-	public int getState() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 

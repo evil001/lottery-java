@@ -29,4 +29,9 @@ public class ApiController {
 		VerifyCodeUtils.outputImage(Integer.parseInt(width), Integer.parseInt(height), res.getOutputStream(),
 				verifyCode);
 	}
+
+	@RequestMapping("/getCheckCode")
+	public String getCheckCode(HttpServletRequest req) {
+		return (String) req.getSession().getAttribute("checkCode");
+	}
 }
