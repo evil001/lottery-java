@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-09-14 17:58:14
+Date: 2016-09-23 18:09:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -447,19 +447,34 @@ INSERT INTO `tl_city` VALUES ('345', '台湾省', '000000', '34', '1', '2016-09-
 DROP TABLE IF EXISTS `tl_constellation`;
 CREATE TABLE `tl_constellation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` int(255) DEFAULT NULL,
   `constellation_name` varchar(50) DEFAULT NULL,
   `constellation_desc` varchar(200) DEFAULT NULL,
+  `start_time` varchar(50) DEFAULT NULL,
+  `end_time` varchar(50) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
   `create_user` varchar(50) DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tl_constellation
 -- ----------------------------
+INSERT INTO `tl_constellation` VALUES ('1', '10000', '白羊座', null, '3.21', '4.19', '1', '2016-09-20 18:13:16', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('2', '10001', '金牛座', null, '4.20', '5.20', '1', '2016-09-20 18:13:38', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('3', '10002', '双子座', null, '5.21', '6.21', '1', '2016-09-20 18:24:45', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('4', '10003', '巨蟹座', null, '6.22', '7.22', '1', '2016-09-20 18:25:07', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('5', '10004', '狮子座', null, '7.23', '8.22', '1', '2016-09-20 18:25:45', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('6', '10005', '处女座', null, '8.23', '9.22', '1', '2016-09-20 18:26:13', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('7', '10006', '天秤座', null, '9.23', '10.23', '1', '2016-09-20 18:26:37', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('8', '10007', '天蝎座', null, '10.24', '11.22', '1', '2016-09-20 18:27:05', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('9', '10008', '射手座', null, '11.23', '12.21', '1', '2016-09-20 18:27:26', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('10', '10009', '摩羯座', null, '12.22', '1.19', '1', '2016-09-20 18:28:06', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('11', '10010', '水瓶座', null, '1.20', '2.18', '1', '2016-09-20 18:28:43', null, null, null);
+INSERT INTO `tl_constellation` VALUES ('12', '10011', '双鱼座', null, '2.19', '3.20', '1', '2016-09-20 18:29:02', null, null, null);
 
 -- ----------------------------
 -- Table structure for tl_district
@@ -2531,10 +2546,11 @@ CREATE TABLE `uc_user` (
   `nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
   `email` varchar(100) DEFAULT NULL,
   `mobile_phone` varchar(50) DEFAULT NULL COMMENT '手机号',
+  `pass` varchar(50) DEFAULT NULL,
   `gender` int(11) DEFAULT NULL COMMENT '性别',
   `birth_y` int(11) DEFAULT NULL COMMENT '生日-年',
-  `birth-m` int(11) DEFAULT NULL COMMENT '生日-月',
-  `birth-d` int(11) DEFAULT NULL COMMENT '生日-日',
+  `birth_m` int(11) DEFAULT NULL COMMENT '生日-月',
+  `birth_d` int(11) DEFAULT NULL COMMENT '生日-日',
   `constellation_id` int(11) DEFAULT NULL COMMENT '星座编号',
   `province` int(11) DEFAULT NULL COMMENT '省份',
   `city` int(11) DEFAULT NULL COMMENT '市',
@@ -2545,15 +2561,21 @@ CREATE TABLE `uc_user` (
   `is_bind_email` int(11) DEFAULT NULL COMMENT '是否绑定邮箱',
   `is_bind_mobile` int(11) DEFAULT NULL COMMENT '是否绑定手机号',
   `income_m` int(11) DEFAULT NULL COMMENT '月收入',
+  `login_time` datetime DEFAULT NULL,
+  `login_num` int(11) DEFAULT NULL,
   `remark` varchar(500) DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL COMMENT '0:删除1:正常2:冻结',
   `create_at` datetime DEFAULT NULL,
   `create_user` varchar(50) DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   `update_user` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uc_user
 -- ----------------------------
+INSERT INTO `uc_user` VALUES ('3', '鸭子', 'abc@qq.com', '13000000000', '	670b14728ad9902aecba32e22fa4f6bd', '0', '2016', '9', '21', '10005', '2', '2', '22', '三大洒洒', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:35:54', null, null, null);
+INSERT INTO `uc_user` VALUES ('4', '亚达', 'abc1@qq.com', '13000000001', null, '0', '2016', '9', '21', '10005', '2', '2', '21', '阿斯达斯的', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:48:47', null, null, null);
+INSERT INTO `uc_user` VALUES ('5', '亚达', 'abc2@qq.com', '13000000002', null, '0', '2016', '9', '21', '10005', '2', '2', '21', '阿斯达斯的', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:48:59', null, null, null);
+INSERT INTO `uc_user` VALUES ('6', '阿迪', 'abc3@qq.com', '13000000003', null, '0', '2016', '9', '21', '10002', '3', '6', '86', '阿斯大苏打', '123123123', null, '0', '0', '0', null, null, null, '0', '2016-09-21 17:52:14', null, '2016-09-22 17:41:32', null);
