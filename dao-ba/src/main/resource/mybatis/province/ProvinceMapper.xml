@@ -17,4 +17,29 @@
 		SELECT d.id,d.district_name districtName,d.city_id cityId,d.create_at createAt FROM tl_district d WHERE d.state = 1
 	</select>
 	
+	<!-- 根据省份编号查询城市 -->
+	<select id="getAllCityByProvinceId" parameterType="Long" resultType="City">
+		SELECT c.id,c.city_name cityName FROM tl_province p,tl_city c WHERE p.id = c.province_id AND p.id = #{pId} AND p.state = 1
+	</select>
+	
+	<select id="getAllDistrictByCityId" parameterType="Long" resultType="District">
+		SELECT d.id,d.district_name districtName FROM tl_district d WHERE d.city_id = #{cId} AND d.state = 1
+	</select>
+	
+	<!-- 查询所有星座 -->
+	<select id="getAllContellation" resultType="Contellation">
+		SELECT c.id,c.`code`,c.constellation_name contellationName,c.start_time startTime,c.end_time endTime FROM tl_constellation c WHERE c.state = 1
+	</select>
+	
+	<select id="getContellationByTime" resultType="Contellation" parameterType="String">
+		SELECT c.id,c.`code` FROM tl_constellation c WHERE #{time} BETWEEN start_time AND end_time
+	</select>
+	
+	<select id="getCityById" parameterType="Long" resultType="City">
+		SELECT c.id,c.city_name cityName,c.zipcode,c.province_id provinceId,c.create_at createAt FROM tl_city c WHERE c.state = 1 AND c.id = #{id}
+	</select>
+	
+	<select id="getDistrictById" parameterType="Long" resultType="District">
+		SELECT d.id,d.district_name districtName,d.city_id cityId,d.create_at createAt FROM tl_district d WHERE d.state = 1 AND d.id = #{id}
+	</select>
 </mapper>

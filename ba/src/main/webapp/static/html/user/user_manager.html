@@ -5,12 +5,14 @@
 <title>用户管理</title>
 </head>
 <body class="easyui-layout" data-options="split:false,fit:true">
+<div style="height: 21%">
+<form action="" id="addUserFrom" method="POST">
 <table cellspacing="10">
 <tr>
 	<td>email:</td>
-	<td><input class="easyui-textbox" type="text" id="inEmail" name="email" /></td>
+	<td><input class="easyui-textbox" data-options="required:true" validType="email" missingMessage="邮箱不能为空" type="text" id="inEmail" name="email" /></td>
 	<td style="width: 55px;">手机号:</td>
-	<td><input class="easyui-textbox" type="text" id="inMobilePhone" name="mobilePhone" /></td>
+	<td><input class="easyui-textbox" data-options="required:true" validType="phoneNum" missingMessage="手机号不能为空" type="text" id="inMobilePhone" name="mobilePhone" /></td>
 	<td>性别:</td>
 	<td>
 		<select id="selGender" name="gender" class="easyui-combobox" data-options="panelHeight:'auto'" style="width: 100px;">
@@ -19,35 +21,287 @@
 		</select>
 	</td>
 	<td style="width: 55px;">用户名称:</td>
-	<td><input class="easyui-textbox" type="text" id="inNickName" name="nickName" ></input></td>
+	<td><input class="easyui-textbox" data-options="required:true" missingMessage="昵称不能为空" type="text" id="inNickName" name="nickName" ></input></td>
 	<td style="width: 60px;">出生年月：</td>
 	<td>
-		<input id="inBirthY" class="easyui-datebox" style="width: 100px;">
+		<input id="inBirthY" name="birth" class="easyui-datebox" style="width: 100px;">
 	</td>
 </tr>
 <tr>
 	<td>省份</td>
 	<td>
-		<select id="selProvince" class=""></select>
+		<select id="selProvince" name="province" class="easyui-combobox">
+			<option>请选择省份</option>
+		</select>
 	</td>
 	<td>市</td>
 	<td>
-		<select id="selCity" class=""></select>
+		<select id="selCity" name="city" class="easyui-combobox">
+			<option>请选择市区</option>
+		</select>
 	</td>
 	<td>区</td>
 	<td>
-		<select id="selDistrict" class=""></select>
+		<select id="selDistrict" name="district" class="easyui-combobox">
+			<option>请选择区县</option>
+		</select>
 	</td>
 	<td style="width: 67px;">详细地址：</td>
-	<td><input type="text" class="easyui-textbox" id="inAddress"></td>
+	<td><input type="text" class="easyui-textbox" name="address" id="inAddress"></td>
 	<td>qq:</td>
-	<td><input type="text" class="easyui-textbox" id="inQq"></td>
+	<td><input type="text" class="easyui-textbox" id="inQq" name="qq"></td>
+</tr>
+<tr>
+	<td colspan="10" style="text-align: -webkit-center;">
+		<input type="submit" style="width: 217px;height: 30px;" value="保存" class="easyui-linkbutton">
+		<input id="restBtn" type="button" style="width: 217px;height: 30px;" value="重置" class="easyui-linkbutton">
+	</td>
 </tr>
 </table>
+</form>
+</div>
+<div style="height: 79%;">
+	<table id="tbQueryUser"></table>
+</div>
 <script type="text/javascript">
-$.get("",function(json){
-	
+$("#addUserFrom").form({
+	url:"/uc/save",
+	onSubmit:function(){
+		return $("#addUserFrom").form('validate');
+	},
+	success:function(data){
+		data = JSON.parse(data);
+		if(data.responseCode == 10000){
+			$.messager.confirm('系统提示','用户添加成功');
+			$("#addUserFrom").form('clear');
+			$("#tbQueryUser").datagrid("reload")
+		}else{
+			$.messager.confirm('系统提示','用户添加失败');
+		}
+	}
 });
+$("#addUserFrom").submit();
+$("#restBtn").click(function(){
+	$("#addUserFrom").form('clear');
+});
+var constellationVal,provinceData,provinceDataFormat,cityData,districtData,chooseIndex;
+$.get("/province/all",function(json){
+	provinceData = json.data;
+	$("#selProvince").combobox({
+		data:json.data,
+		valueField:"id",
+		textField:"provinceName",
+		editable:false,
+		width:173,
+		onSelect:function(obj){
+			$.get("/city/"+obj.id,function(json){
+				$("#selCity").combobox({
+					data:json.data,
+					valueField:"id",
+					textField:"cityName",
+					editable:false,
+					width:173,
+					onSelect:function(obj){
+						$.get("/district/"+obj.id,function(json){
+							$("#selDistrict").combobox({
+								data:json.data,
+								valueField:"id",
+								textField:"districtName",
+								editable:false,
+								width:150
+							});
+						})
+					}
+				});
+			})
+		}
+	});
+});
+var genderData = [{"value":"0","text":"男"},{"value":"1","text":"女"}];
+var isBind = [{"value":"0","text":"否"},{"value":"1","text":"是"}];
+$.get("/province/all/format",function(json){
+	provinceDataFormat = json.data;
+});
+$.get("/contellation/all",function(json){
+	constellationVal = json.data;
+});
+$.get("/city/all",function(json){
+	cityData = json.data;
+});
+$.get("/district/all",function(json){
+	districtData = json.data;
+});
+$("#tbQueryUser").datagrid({
+	url:'/uc/user/all',
+	fit:true,
+	align:"center",
+	beginEdit:1,
+	sortName:'createAt',
+	sortOrder:'desc',
+	pageNumner:1,
+	pageSize:10,
+	pagination:true,
+	rownnumbers:true,
+	singleSelect:true,
+	method:"GET",
+	nowrap:true,
+	numbers:true,
+	fitColumns:true,
+	columns:[[
+				{field:'id',title:'主键',width:100,align:"center"},
+				{field:'nickName',title:'昵称',width:150,editor:"text"},
+				{field:"email",title:"邮箱",width:150,editor:"text"},
+				{field:"mobilePhone",title:"手机号",width:100,editor:"text"},
+				{field:"gender",title:"性别",width:50,editor:{type:"combobox",options:{data:genderData,valueField:"value",textField:"text"}},formatter:function(value,row,index){
+					if(row.gender == "0"){
+						return "<span>男</span>";
+					}else{
+						return "<span>女</span>";
+					}
+				}},
+				{field:"birth",title:"生日",width:100,editor:"datebox"},
+				{field:"constellationId",title:"星座",width:150,formatter:function(value,row,index){
+					for(var i = 0;i<constellationVal.length;i++){
+						if(row.constellationId == constellationVal[i].code){
+							return constellationVal[i].contellationName;
+						}
+					}
+				},editor:{type:"combobox",options:{url:"/contellation/all/format",valueField:"code",textField:"contellationName"}}},
+				{field:"province",title:"省份",width:150,formatter:function(value,row,index){
+					for(var i =0;i<provinceData.length;i++){
+						if(row.province == provinceData[i].id){
+							return provinceData[i].provinceName;
+						}
+					}
+				},editor:{type:"combobox",options:{url:"/province/all/format",valueField:"id",textField:"provinceName",onSelect:function(data){
+					var thisTarget = $('#tbQueryUser').datagrid('getEditor', {'index':chooseIndex,'field':'province'}).target;
+					var value = thisTarget.combobox('getValue');
+					var target = $('#tbQueryUser').datagrid('getEditor', {'index':chooseIndex,'field':'city'}).target;
+					//target.combobox('clear'); //清除原来的数据  
+					target.combobox("reload","/city/"+value+"/format");	
+				}}}},
+				{field:"city",title:"城市",width:150,formatter:function(value,row,index){
+					for(var i =0;i<cityData.length;i++){
+						if(row.city == cityData[i].id){
+							return cityData[i].cityName;
+						}
+					}
+				},editor:{type:"combobox",options:{url:"/city/all/format",valueField:"id",textField:"cityName",onSelect:function(data){
+					var thisTarget = $('#tbQueryUser').datagrid('getEditor', {'index':chooseIndex,'field':'city'}).target;
+					var value = thisTarget.combobox('getValue');
+					var target = $('#tbQueryUser').datagrid('getEditor', {'index':chooseIndex,'field':'district'}).target;
+					//target.combobox('clear'); //清除原来的数据  
+					console.log(value);
+					target.combobox("reload","/district/"+value+"/format");
+				}}}},
+				{field:"district",title:"区县",width:150,formatter:function(value,row,index){
+					for(var i =0;i<districtData.length;i++){
+						if(row.district == districtData[i].id){
+							return districtData[i].districtName;
+						}
+					}
+				},editor:{type:"combobox",options:{url:"/district/all/format",valueField:"id",textField:"districtName"}}},
+				{field:"address",title:"地址",width:150,editor:"text"},
+				{field:"qq",title:"qq",width:150,editor:"text"},
+				{field:"headImg",title:"头像",width:150,editor:"text"},
+				{field:"isBindEmail",title:"绑定邮箱",width:150,editor:{type:"combobox",options:{data:isBind,valueField:"value",textField:"text"}}},
+				{field:"isBindMobile",title:"绑定手机号",width:150,editor:{type:"combobox",options:{data:isBind,valueField:"value",textField:"text"}}},
+				{field:"incomeIn",title:"收入",width:150,editor:"text"},
+				{field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
+				{field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
+		        	  if (row.editing){
+	                      var s = '<a href="javascript:void(0)" onclick="saverow(this)">保存</a> ';
+	                      var c = '<a href="javascript:void(0)" onclick="cancelrow(this)">取消</a>';
+	                      return s+c;
+	                  } else {
+	                      var e = '<a href="javascript:void(0)" onclick="editrow(this)">编辑</a> ';
+	                      var d = '<a href="javascript:void(0)" data="'+row.id+'" onclick="deleterow(this)">删除</a>';
+	                      return e+d;
+	                  }
+		          }}
+	          ]],
+	        onCancelEdit:function(index,row){
+	      		row.editing = false;
+	      		$(this).datagrid('refreshRow', index);
+	      	},onBeforeEdit:function(index,row){
+	              row.editing = true;
+	              chooseIndex = index;
+	              $(this).datagrid('refreshRow', index);
+	        },onAfterEdit:function(index,row){
+	              row.editing = false;
+	              $(this).datagrid('refreshRow', index);
+	        },onEndEdit:function(index,row){
+	        	var ed = $(this).datagrid("getEditor",{
+	        		index:index,
+	        		field:'nickName',
+	        		field:'email',
+	        		field:'mobilePhone',
+	        		field:'gender',
+	        		field:'birth',
+	        		field:'constellationId',
+	        		field:'province',
+	        		field:'city',
+	        		field:'district',
+	        		field:'address',
+	        		field:'qq',
+	        		field:'headImg',
+	        		field:'isBindEmail',
+	        		field:'isBindMobile',
+	        		field:'incomeIn'
+	        	});
+	        	var user = {
+	        		id:row.id,
+	        		nickName:row.nickName,
+	        		email:row.email,
+	        		mobilePhone:row.mobilePhone,
+	        		gender:row.gender,
+	        		birth:row.birth,
+	        		constellationId:row.constellationId,
+	        		province:row.province,
+	        		city:row.city,
+	        		district:row.district,
+	        		address:row.address,
+	        		qq:row.qq,
+	        		headImg:row.headImg,
+	        		isBindEmail:row.isBindEmail,
+	        		isBindMobile:row.isBindMobile,
+	        		incomeIn:row.incomeIn	
+	        	}
+	        	$.get("/uc/user/update",user,function(json){
+	        		if(json.responseCode == 10000){
+	        			$.messager.show({
+							title:"系统提示",
+							msg:"修改成功",
+							showType:"show"
+						})
+	        		}
+	        	});
+	        }
+});
+
+function saverow(target){
+	$("#tbQueryUser").datagrid("endEdit",getRowIndex(target));
+}
+
+function cancelrow(target){
+	$("#tbQueryUser").datagrid("cancelEdit",getRowIndex(target));
+}
+
+function editrow(target){
+	$("#tbQueryUser").datagrid("beginEdit",getRowIndex(target));
+}
+
+function deleterow(target){
+	$.messager.confirm('系统提示','确定要删除嘛?',function(r){
+		if (r){
+			$('#tbQueryUser').datagrid('deleteRow', getRowIndex(target));
+			var user = {
+				id:$(target).attr("data")
+			}
+			$.get("/uc/user/del",user);
+		}
+	});
+}
 </script>
 </body>
 </html>

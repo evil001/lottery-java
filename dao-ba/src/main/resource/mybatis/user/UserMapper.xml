@@ -8,6 +8,9 @@
 			<if test="nickName != null and nickName !=''">
 				nick_name,
 			</if>
+			<if test="email != null and email !=''">
+				email,
+			</if>
 			<if test="mobilePhone != null and mobilePhone != ''">
 				mobile_phone,
 			</if>
@@ -18,7 +21,10 @@
 				birth_y,
 			</if>
 			<if test="birthM != null">
-				birth-m,
+				birth_m,
+			</if>
+			<if test="birthD != null">
+				birth_d,
 			</if>
 			<if test="constellationId != null">
 				constellation_id,
@@ -73,6 +79,9 @@
 			<if test="nickName != null and nickName !=''">
 				#{nickName},
 			</if>
+			<if test="email != null and email !=''">
+				#{email},
+			</if>
 			<if test="mobilePhone != null and mobilePhone != ''">
 				#{mobilePhone},
 			</if>
@@ -84,6 +93,9 @@
 			</if>
 			<if test="birthM != null">
 				#{birthM},
+			</if>
+			<if test="birthD != null">
+				#{birthD},
 			</if>
 			<if test="constellationId != null">
 				#{constellationId},
@@ -135,4 +147,114 @@
 			</if>
 		</trim>
 	</insert>
+	
+	<!-- 查询所有用户 -->
+	<select id="getAllUser" resultType="UCUser">
+		SELECT
+		uc.id,
+		uc.nick_name nickName,
+		uc.email,
+		uc.mobile_phone mobilePhone,
+		uc.gender,
+		uc.birth_y birthY,
+		uc.`birth_m` birthM,
+		uc.`birth_d` birthD,
+		uc.constellation_id constellationId,
+		c.constellation_name constellationName,
+		uc.province,
+		uc.city,
+		uc.district,
+		uc.address,
+		uc.qq,
+		uc.head_img headImg,
+		uc.is_bind_email isBindEmail,
+		uc.is_bind_mobile isBindMobile,
+		uc.income_m incomeM,
+		uc.remark,
+		uc.create_at createAt
+	FROM
+		uc_user uc,
+		tl_constellation c
+	WHERE
+		uc.constellation_id = c.`code` and uc.state = 1
+	</select>
+	
+	<update id="update" parameterType="UCUser">
+		UPDATE uc_user
+		<set>
+			<if test="nickName != null and nickName != ''">
+				nick_name = #{nickName},
+			</if>
+			<if test="email != null and email !=''">
+				email = #{email},
+			</if>
+			<if test="mobilePhone != null and mobilePhone !=''">
+				mobile_phone = #{mobilePhone},
+			</if>
+			<if test="gender != null">
+				gender = #{gender},
+			</if>
+			<if test="birthY != null">
+				birth_y = #{birthY},
+			</if>
+			<if test="birthM != null">
+				birth_m = #{birthM},
+			</if>
+			<if test="birthD != null">
+				birth_d = #{birthD},
+			</if>
+			<if test="constellationId != null">
+				constellation_id = #{constellationId},
+			</if>
+			<if test="province != null">
+				province = #{province},
+			</if>
+			<if test="city != null">
+				city = #{city},
+			</if>
+			<if test="district != null">
+				district = #{district},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="qq != null and qq != ''">
+				qq = #{qq},
+			</if>
+			<if test="headImg != null and headImg !=''">
+				head_img = #{headImg},
+			</if>
+			<if test="isBindEmail != null">
+				is_bind_email = #{isBindEmail},
+			</if>
+			<if test="isBindMobile != null">
+				is_bind_mobile = #{isBindMobile},
+			</if>
+			<if test="incomeM != null">
+				income_m = #{incomeM},
+			</if>
+			<if test="remark != null and remark !=''">
+				remark = #{remark},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="createAt != null">
+				create_at = #{createAt},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateAt != null">
+				update_at = NOW(),
+			</if>
+			<if test="updateUser != null and updateUser !=''">
+				update_user = #{updateUser},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
 </mapper>
