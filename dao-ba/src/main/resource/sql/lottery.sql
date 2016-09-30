@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2016-09-23 18:09:20
+Date: 2016-09-30 15:44:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2538,6 +2538,27 @@ INSERT INTO `tl_purchase_cfg` VALUES ('2', '1', '苹果（Apple）iPhone 6s 16G�
 INSERT INTO `tl_purchase_cfg` VALUES ('3', '2', '苹果（Apple）iPhone 6s Plus 16G版 4G手机', '5699', '0', '0', '0', '7', '1', '2016-08-26 11:00:03', null, null, null);
 
 -- ----------------------------
+-- Table structure for uc_suggestion
+-- ----------------------------
+DROP TABLE IF EXISTS `uc_suggestion`;
+CREATE TABLE `uc_suggestion` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) DEFAULT NULL,
+  `comment` varchar(500) DEFAULT NULL,
+  `contact` varchar(200) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  `create_user` varchar(50) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `update_user` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uc_suggestion
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for uc_user
 -- ----------------------------
 DROP TABLE IF EXISTS `uc_user`;
@@ -2575,7 +2596,7 @@ CREATE TABLE `uc_user` (
 -- ----------------------------
 -- Records of uc_user
 -- ----------------------------
-INSERT INTO `uc_user` VALUES ('3', '鸭子', 'abc@qq.com', '13000000000', '	670b14728ad9902aecba32e22fa4f6bd', '0', '2016', '9', '21', '10005', '2', '2', '22', '三大洒洒', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:35:54', null, null, null);
+INSERT INTO `uc_user` VALUES ('3', '鸭子', 'abc@qq.com', '13000000000', '670b14728ad9902aecba32e22fa4f6bd', '0', '2016', '9', '21', '10005', '2', '2', '22', '三大洒洒', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:35:54', null, null, null);
 INSERT INTO `uc_user` VALUES ('4', '亚达', 'abc1@qq.com', '13000000001', null, '0', '2016', '9', '21', '10005', '2', '2', '21', '阿斯达斯的', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:48:47', null, null, null);
 INSERT INTO `uc_user` VALUES ('5', '亚达', 'abc2@qq.com', '13000000002', null, '0', '2016', '9', '21', '10005', '2', '2', '21', '阿斯达斯的', '123123123', null, '0', '0', '0', null, null, null, '1', '2016-09-21 17:48:59', null, null, null);
 INSERT INTO `uc_user` VALUES ('6', '阿迪', 'abc3@qq.com', '13000000003', null, '0', '2016', '9', '21', '10002', '3', '6', '86', '阿斯大苏打', '123123123', null, '0', '0', '0', null, null, null, '0', '2016-09-21 17:52:14', null, '2016-09-22 17:41:32', null);
