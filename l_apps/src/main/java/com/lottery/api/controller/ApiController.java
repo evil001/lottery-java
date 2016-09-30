@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lottery.mutual.constants.Constants;
 import com.lottery.mutual.verifycode.VerifyCodeUtils;
 
 @RestController
@@ -25,7 +26,7 @@ public class ApiController {
 		res.setContentType("image/jpeg");
 
 		String verifyCode = VerifyCodeUtils.generateVerifyCode(Integer.parseInt(rd));
-		req.getSession().setAttribute("checkCode", verifyCode.toLowerCase());
+		req.getSession().setAttribute(Constants.CHECK_CODE, verifyCode.toLowerCase());
 		VerifyCodeUtils.outputImage(Integer.parseInt(width), Integer.parseInt(height), res.getOutputStream(),
 				verifyCode);
 	}

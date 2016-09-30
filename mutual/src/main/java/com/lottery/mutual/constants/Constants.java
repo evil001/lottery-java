@@ -10,4 +10,5 @@ public class Constants {
 
 	public final static String QINIU_BUCKETNAME = "jinshi";
 
+	public final static String CHECK_CODE = "checkCode";
 }
