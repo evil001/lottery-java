@@ -39,7 +39,12 @@ datagrid = $("#tbQueryBanner").datagrid({
 	          	},editor:{type:"button",options:{title:"上传"}}
 	          },
 	          {field:"url",title:"链接",width:150,align:"center",editor:"text"},
-	          {field:"type",title:"类型",width:100,align:"center",editor:{type:"combobox",options:{data:typeEnum,valueField:"value",textField:"text"}}},
+	          {field:"type",title:"类型",width:100,align:"center",editor:{type:"combobox",options:{data:typeEnum,valueField:"value",textField:"text"}},formatter:function(value,row,index){
+	        	  if(value == 0){
+	        		  return "WAP/WX";
+	        	  }
+	        	  return "PC";
+	          }},
 	          {field:"startTime",title:"开始时间",width:150,align:"center",editor:"datetimebox",formatter:formatDateYmdHms},
 	          {field:"endTime",title:"结束时间",width:150,align:"center",editor:"datetimebox",formatter:formatDateYmdHms},
 	          {field:"imgWidth",title:"图片宽度",width:100,align:"center",editor:{type:"numberbox",options:{required:false}}},
@@ -62,17 +67,59 @@ datagrid = $("#tbQueryBanner").datagrid({
 			}
 		}
 	},'-',{
+		text:"编辑",iconCls:"icon-edit",handler:function(){
+			var rows = datagrid.datagrid('getSelections');
+			if(rows.length == 1){
+				if(editRow != undefined){
+					datagrid.datagrid("endEdit",editRow);	
+				}
+				
+				if(editRow == undefined){
+					var index = datagrid.datagrid("getRowIndex",rows[0]);
+					//开启编辑
+					//把当前开启编辑的行赋值给全局变量editRow
+					editRow = index;
+					console.log("编辑后的editRow:"+editRow);
+					//当开启了当前选择行的编辑状态之后应该取消当前列表的所有选择行，要不然双击之后无法在选择其他行
+					datagrid.datagrid('unselectAll');
+					datagrid.datagrid('beginEdit',index); 
+				}
+			}else{
+				$.messager.confirm('系统提示', "请选择编辑的行");
+			}
+		}
+	},'-',{
 		text:"保存",iconCls:"icon-save",handler:function(){
-			$("#tbQueryBanner").datagrid('endEdit', editRow);
-			var rows = $("#tbQueryBanner").datagrid('getChanges');
-			var rowstr = JSON.stringify(rows);
-			console.log(rows);
+			var insertEvent = datagrid.datagrid('getChanges',"inserted");
+			var updateEvent = datagrid.datagrid('getChanges','updated');
+			datagrid.datagrid('endEdit', editRow);
+			var rows = datagrid.datagrid('getChanges');
 			rows[0].imgUrl = $("#inAllImg").val();
-			rows[0].createAt = new Date();
-			rows[0].startTime = new Date(rows[0].startTime);
-			rows[0].endTime = new Date(rows[0].endTime);
-			$.get("/cms/banner/save",rows[0]);
-			datagrid.datagrid("reload");
+			if(insertEvent.length > 0 ){
+				console.log(rows[0])
+				$.get("/cms/banner/save",rows[0],function(result){
+					if(result.responseCode == 10000){
+						$.messager.confirm('系统提示','添加成功');
+						datagrid.datagrid("reload");
+					}
+				});				
+			}
+			
+			if(updateEvent.length > 0 ){
+				$.ajax({
+					type:"GET",
+					url:"/cms/banner/modify",
+					data:rows[0],
+					success:function(result){
+						console.log(result);
+						if(result.responseCode == 10000){
+							$.messager.confirm('系统提示','修改成功');
+							datagrid.datagrid("reload");
+						}
+					}
+				});
+			}
+			
 		}
 	},'-',{
 		text:"撤销",iconCls:"icon-redo",handler:function(){

@@ -53,8 +53,9 @@ $("#tbQueryPro").datagrid({
 	          {field:'productName',title:'商品名称',width:150,editor:"text"},
 	          {field:'productPrice',title:'商品价格',width:150,align:"center",editor:{type:"numberbox",options:{min:0,precision:2}}},
 	          {field:'productImg',title:'商品封面',width:150,align:"center",formatter:function(value,row,index){
-	        	  return "<img src="+row.productImg+">";
+	        	  return "<img src="+row.productImg+'-80x80'+">";
 	          }},
+	          {field:"productNum",title:"商品数量",width:150,align:"center",editor:{type:"numberbox",options:{min:0,precision:2}}},
 	          {field:'createAt',title:'创建时间',width:150,align:"center",formatter:formatDateYmdHms},
 	          {field:'oper',title:'操作',width:100,alitn:"center",formatter:function(value,row,index){
 	        	  if (row.editing){
@@ -103,6 +104,7 @@ $("#tbQueryPro").datagrid({
     		productName:row.productName,
     		productDesc:row.productDesc,
     		productPrice:row.productPrice,
+    		productNum:row.productNum,
     		state:row.state
     	}
 		$.get("/prod/update",pro,function(data){
