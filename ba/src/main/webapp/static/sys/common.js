@@ -90,7 +90,7 @@ Date.prototype.format = function (format) {
             format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));  
     return format;  
 }  
-
+ 
 function formatDatebox(value) {  
     if (value == null || value == '') {  
         return '';  
@@ -125,7 +125,7 @@ function getRowIndex(target){
 }
 
 $.extend($.fn.datagrid.defaults.editors, {
-    button: {//colorpicker就是你要自定义editor的名称
+	button: {//colorpicker就是你要自定义editor的名称
         init: function (container, options) {
             var editorContainer = $("<div/>");
             var button = $("<a href='javascript:void(0)' onclick='aUpload(this)'>"+options.title+"</a>").linkbutton({plain:true});
@@ -148,9 +148,51 @@ $.extend($.fn.datagrid.defaults.editors, {
                 input.width(width);
             }
         }
-    }
+    },
+	numberspinner:{
+		init:function(container,options){
+			var input = $("<input type='text'>").appendTo(container);
+			return input.numberspinner(options);
+		},
+		destroy:function(target){
+			$(target).numberspinner('destroy');
+		},
+		getValue:function(target){
+			return $(target).numberspinner('getValue');
+		},
+		setValue:function(target,value){
+			$(target).numberspinner('setValue',value);
+		},
+		resize:function(target,width){
+			$(target).numberspinner('resize',width);
+		}
+	},
+	datetimebox:{
+		init:function(container,options){
+			var editor = $("<input />").appendTo(container);
+			editor.datetimebox(options);
+			return editor;
+		},
+		getValue:function(target){
+			var newStr = $(target).datetimebox('getValue').replace(/:/g,'-');
+			newStr = newStr.replace(/ /g,'-');
+			var arr = newStr.split("-");
+			var dateNum = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+			var timeStamp = dateNum.getTime();
+			return formatDateYmdHms(timeStamp);
+		},
+		setValue:function(target,value){
+			console.log(formatDateYmdHms(value));
+			$(target).datetimebox('setValue',formatDateYmdHms(value));
+		},
+		resize:function(target,width){
+			$(target).datetimebox('resize',width);
+		},
+		destory:function(target){
+			$(target).datetimebox('destroy');
+		}
+	}
 });
-
 function isEmpty(value) {
   return (Array.isArray(value) && value.length === 0) 
       || (Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0);

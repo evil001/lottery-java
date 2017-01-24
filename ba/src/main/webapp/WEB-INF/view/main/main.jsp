@@ -17,9 +17,9 @@
 	<div region="north" split="false" style="height: 70px;">
 		
 	</div>
-	<div region="south" split="false" style="height: 40px;">
+	<!-- <div region="south" split="false" style="height: 40px;">
 	
-	</div>
+	</div> -->
 	<div region="west" title="菜单栏" split="true" style="width: 120px;">
 		<div class="easyui-accordion" fit="true" style="width: 100%px;">
 			<div title="云购管理" style="text-align: -webkit-center;">
