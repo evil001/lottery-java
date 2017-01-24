@@ -9,6 +9,9 @@
 			<if test="productName !=null and productName !=''">
 				product_name,
 			</if>
+			<if test="productNum != null">
+				product_num,
+			</if>
 			<if test="productDesc !=null and productDesc !=''">
 				product_desc,
 			</if>
@@ -49,6 +52,9 @@
 		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
 			<if test="productName !=null and productName !=''">
 				#{productName},
+			</if>
+			<if test="productNum != null">
+				#{productNum},
 			</if>
 			<if test="productDesc !=null and productDesc !=''">
 				#{productDesc},
@@ -150,7 +156,7 @@
 	
 	<!-- 查询商品信息 -->
 	<select id="getProduct" resultType="Product">
-		SELECT tlp.id, tlp.product_name productName,tlp.product_price productPrice,(SELECT tpi.product_img FROM tl_product_img tpi WHERE tpi.product_id = tlp.id AND tpi.state = 1) productImg,tlp.create_at createAt FROM tl_product tlp
+		SELECT tlp.id,tlp.product_num productNum, tlp.product_name productName,tlp.product_price productPrice,(SELECT tpi.product_img FROM tl_product_img tpi WHERE tpi.product_id = tlp.id AND tpi.state = 1) productImg,tlp.create_at createAt FROM tl_product tlp
 		<where>
 			<if test="productName !=null and productName !=''">
 				tlp.product_name LIKE CONCAT('%','${productName}','%')
@@ -158,7 +164,7 @@
 			<if test="state !=null">
 				AND tlp.state = #{state}
 			</if>
-			<if test="createAt !=null">
+			<if test="createAt !=null and createAt != ''">
 				AND DATE_FORMAT(tlp.create_at,'%Y-%m-%d') = #{createAt}
 			</if>
 			<if test="categoryCode != null and categoryCode != ''">
@@ -176,6 +182,9 @@
 		<set>
 			<if test="productName != null and productName != ''">
 				product_name = #{productName},
+			</if>
+			<if test="productNum != null">
+				product_num = #{productNum},
 			</if>
 			<if test="productDesc !=null and productDesc !=''">
 				product_desc = #{productDesc},

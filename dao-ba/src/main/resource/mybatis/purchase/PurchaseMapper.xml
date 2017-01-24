@@ -156,6 +156,7 @@
 		pi.product_img productImg,
 		p.product_name productName,
 		p.product_price productPrice, 
+		p.product_num productNum,
 		p.is_hot isHot,
 		p.is_new isNew,
 		p.is_show isShow,

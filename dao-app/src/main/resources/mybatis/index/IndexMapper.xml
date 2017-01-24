@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.index.IndexDao">
+
+	<select id="getBanner" parameterType="Banner">
+		SELECT
+		b.title,
+		b.url,
+		b.img_url imgUrl,
+		b.img_width imgWidth,
+		b.img_height imgHeight
+	FROM
+		tl_banner b
+	WHERE
+		b.state = 1
+	AND b.type = 1
+	AND NOW() BETWEEN start_time
+	AND end_time
+	</select>
+</mapper>

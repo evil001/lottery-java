@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lottery.dao.purchase.PurchaseDao">
+
+<select id="getPurchaseList" resultType="Purchase">
+	SELECT
+	pc.id,
+	pc.limit_person limitPerson,
+	pc.participate,
+	pc.product_id productId,
+	pc.periods,
+	pc.residue_person residuePerson,
+	pc.total_person totalPerson,
+	pc.title,
+	p.product_num productNum,
+	pi.product_img productImg
+FROM
+	tl_purchase_cfg pc,tl_product p,tl_product_img pi
+WHERE
+	pc.id in
+	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+    AND pc.state = 1 AND pc.product_id = p.id AND pc.product_id = pi.product_id
+</select>
+</mapper>
