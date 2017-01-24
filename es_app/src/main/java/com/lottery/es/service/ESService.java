@@ -63,6 +63,7 @@ public class ESService {
 				String categoryCode = (String) hit.getSource().get("categoryCode");
 				Integer residuePerson = (Integer) hit.getSource().get("residuePerson");
 				String productName = (String) hit.getSource().get("productName");
+				Integer productNum = (Integer) hit.getSource().get("productNum");
 				Integer isShow = (Integer) hit.getSource().get("isShow");
 				String typeCode = (String) hit.getSource().get("typeCode");
 				Integer totalPerson = (Integer) hit.getSource().get("totalPerson");
@@ -80,6 +81,7 @@ public class ESService {
 				m.setCategoryCode(categoryCode);
 				m.setResiduePerson(residuePerson);
 				m.setProductName(productName);
+				m.setProductNum(productNum);
 				m.setIsShow(isShow);
 				m.setTypeCode(typeCode);
 				m.setTotalPerson(totalPerson);
@@ -120,6 +122,7 @@ public class ESService {
 		BulkResponse bulkResponse = null;
 		if (!list.isEmpty()) {
 			for (Map<String, Object> map : list) {
+				System.out.println(map);
 				bulkResponse = bulkRequest
 						.add(this.client.prepareIndex(indexName, type, map.get("id").toString()).setSource(map))
 						.execute().actionGet();

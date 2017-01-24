@@ -13,6 +13,8 @@ public class Product extends BaseDomain implements Serializable {
 
 	private String productName;
 
+	private Integer productNum;
+
 	private String productDesc;
 
 	private Double productPrice;
@@ -28,6 +30,14 @@ public class Product extends BaseDomain implements Serializable {
 	private String typeCode;
 
 	private String categoryCode;
+
+	public Integer getProductNum() {
+		return productNum;
+	}
+
+	public void setProductNum(Integer productNum) {
+		this.productNum = productNum;
+	}
 
 	public String getProductName() {
 		return productName;

@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lottery.controller.BaseController;
 import com.lottery.mutual.JsonpMessage;
 import com.lottery.mutual.constants.Constants;
 import com.lottery.service.user.UserService;
 
 @Controller
-public class UserLogin {
+public class UserLogin extends BaseController {
 
 	@Autowired
 	private UserService userService;

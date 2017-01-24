@@ -10,17 +10,17 @@ public class BaseDomain implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected Long id;
+	private Long id;
 
-	protected int state = 1;
+	private Integer state;
 
-	protected Date createAt;
+	private Date createAt;
 
-	protected String createUser;
+	private String createUser;
 
-	protected Date updateAt;
+	private Date updateAt;
 
-	protected String updateUser;
+	private String updateUseer;
 
 	public Long getId() {
 		return id;
@@ -30,11 +30,11 @@ public class BaseDomain implements Serializable {
 		this.id = id;
 	}
 
-	public int getState() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 
@@ -62,11 +62,11 @@ public class BaseDomain implements Serializable {
 		this.updateAt = updateAt;
 	}
 
-	public String getUpdateUser() {
-		return updateUser;
+	public String getUpdateUseer() {
+		return updateUseer;
 	}
 
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
+	public void setUpdateUseer(String updateUseer) {
+		this.updateUseer = updateUseer;
 	}
 }

@@ -12,6 +12,8 @@ public class Medicine {
 
 	private String productImg;
 
+	private int productNum;
+
 	private int isNew;
 
 	private String categoryCode;
@@ -37,6 +39,14 @@ public class Medicine {
 	private String createAt;
 
 	public Medicine() {
+	}
+
+	public int getProductNum() {
+		return productNum;
+	}
+
+	public void setProductNum(int productNum) {
+		this.productNum = productNum;
 	}
 
 	public Medicine(Integer id, Long total, Integer participate, Integer limitPerson, String productImg, int isNew,

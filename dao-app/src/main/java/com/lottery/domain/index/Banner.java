@@ -1,10 +1,10 @@
-package com.lottery.domain.banner;
+package com.lottery.domain.index;
 
 import java.util.Date;
 
 import com.lottery.domain.base.BaseDomain;
 
-public class BannerInfo extends BaseDomain {
+public class Banner extends BaseDomain {
 
 	/**
 	 * 
@@ -17,11 +17,11 @@ public class BannerInfo extends BaseDomain {
 
 	private String imgUrl;
 
-	private Integer imgWidth;
+	private String imgWidth;
 
-	private Integer imgHeight;
+	private String imgHeight;
 
-	private Integer type;
+	private int type;
 
 	private Date startTime;
 
@@ -35,30 +35,6 @@ public class BannerInfo extends BaseDomain {
 		this.title = title;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-
-	public Integer getImgWidth() {
-		return imgWidth;
-	}
-
-	public void setImgWidth(Integer imgWidth) {
-		this.imgWidth = imgWidth;
-	}
-
-	public Integer getImgHeight() {
-		return imgHeight;
-	}
-
-	public void setImgHeight(Integer imgHeight) {
-		this.imgHeight = imgHeight;
-	}
-
 	public String getUrl() {
 		return url;
 	}
@@ -67,11 +43,35 @@ public class BannerInfo extends BaseDomain {
 		this.url = url;
 	}
 
-	public Integer getType() {
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public String getImgWidth() {
+		return imgWidth;
+	}
+
+	public void setImgWidth(String imgWidth) {
+		this.imgWidth = imgWidth;
+	}
+
+	public String getImgHeight() {
+		return imgHeight;
+	}
+
+	public void setImgHeight(String imgHeight) {
+		this.imgHeight = imgHeight;
+	}
+
+	public int getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
@@ -89,5 +89,9 @@ public class BannerInfo extends BaseDomain {
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }

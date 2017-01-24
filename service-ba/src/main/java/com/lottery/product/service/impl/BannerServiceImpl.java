@@ -31,6 +31,7 @@ public class BannerServiceImpl implements BannerService {
 
 	@Override
 	public void saveBanner(BannerInfo banner) {
+		banner.setCreateAt(new Date());
 		this.bannerDao.saveBanner(banner);
 	}
 
@@ -41,6 +42,12 @@ public class BannerServiceImpl implements BannerService {
 		bannerInfo.setState(0);
 		bannerInfo.setUpdateAt(new Date());
 		this.bannerDao.updateBanner(bannerInfo);
+	}
+
+	@Override
+	public void update(BannerInfo banner) {
+		banner.setUpdateAt(new Date());
+		this.bannerDao.updateBanner(banner);
 	}
 
 }

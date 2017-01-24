@@ -1,16 +1,15 @@
 package com.lottery.domain.user;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class UCUser implements Serializable {
+import com.lottery.domain.base.BaseDomain;
+
+public class UCUser extends BaseDomain implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -922399829240844091L;
-
-	private Long id;
 
 	private String nickName;
 
@@ -54,16 +53,6 @@ public class UCUser implements Serializable {
 
 	private String remark;
 
-	private Integer state;
-
-	private Date createAt;
-
-	private String createUser;
-
-	private Date updateAt;
-
-	private String updateUser;
-
 	public String getPass() {
 		return pass;
 	}
@@ -86,14 +75,6 @@ public class UCUser implements Serializable {
 
 	public void setBirth(String birth) {
 		this.birth = this.birthY + "-" + this.birthM + "-" + this.birthD;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getNickName() {
@@ -240,43 +221,4 @@ public class UCUser implements Serializable {
 		this.remark = remark;
 	}
 
-	public Integer getState() {
-		return state;
-	}
-
-	public void setState(Integer state) {
-		this.state = state;
-	}
-
-	public Date getCreateAt() {
-		return createAt;
-	}
-
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
-	}
-
-	public String getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-	public Date getUpdateAt() {
-		return updateAt;
-	}
-
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
-	}
-
-	public String getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
 }

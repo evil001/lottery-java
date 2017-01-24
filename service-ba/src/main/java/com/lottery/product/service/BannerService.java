@@ -8,6 +8,8 @@ public interface BannerService {
 
 	EasyUIMessage getBannerList(ParamPage param);
 
+	void update(BannerInfo banner);
+
 	void saveBanner(BannerInfo banner);
 
 	void deleteBanner(Long id);
